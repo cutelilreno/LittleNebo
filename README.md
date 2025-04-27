@@ -1,5 +1,7 @@
 # Little Nebo
 
+[![Java CI with Maven](https://github.com/cutelilreno/LittleNebo/actions/workflows/maven.yml/badge.svg)](https://github.com/cutelilreno/LittleNebo/actions/workflows/maven.yml)
+
 A lightweight chat plugin for Paper servers, inspired by Nebo, the god of communication and wisdom. Little Nebo aims to make chat formatting simple and flexible, using MiniMessage and PlaceholderAPI, while keeping things as safe and efficient as possible.
 
 Created to be a functional and configurable chat plugin, but as lean as possible. Designed for papermc 1.21+.
