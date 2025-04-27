@@ -1,0 +1,53 @@
+# Little Nebo Configuration
+
+# Debug mode - set to true to see debug messages in console
+# You can also set it using /nebo debug
+debug: false
+
+# Chat format options
+# Available placeholders:
+# - %player_name% - Player's name
+# - %player_displayname% - Player's display name
+# - All PlaceholderAPI placeholders
+#
+# MiniMessage formatting is supported: https://docs.adventure.kyori.net/minimessage/format.html
+# Legacy color codes with & are also supported
+
+formats:
+  # MiniMessage example, using Player and Server Placeholders
+  # default:
+  #  format: |
+  #    <gray>[<green>Chat</green>]</gray><hover:show_text:'Ping: <gold>%player_ping%ms</gold>
+  #    Health: <red>%player_health%❤</red>
+  #    Level: <yellow>%player_level%</yellow>
+  #    Online: <green>%server_online%/%server_max_players%</green>'> <gray><<white>{display_name}</white>></gray></hover> <white>{message}</white>
+
+  # Default format for all players
+  default:
+    format: <gray>[<green>Chat</green>]</gray> <gray><</gray><white>{display_name}</white><gray>></gray>
+      <white>{message}</white>
+
+  # If you want to use legacy format instead, uncomment and modify the line below (untested)
+  # legacy-format: "&7[&aChat&7] &f{display_name}&7: &f{message}"
+
+  # Additional formats based on permissions
+  # Players with permission littlenebo.format.admin will use this format
+  admin:
+    permission: littlenebo.format.admin
+    format: <gray>[<red>Admin</red>]</gray> <gray><</gray><white>{display_name}</white><gray>></gray>
+      <white>{message}</white>
+
+  # Staff format - requires littlenebo.format.staff permission
+  staff:
+    permission: littlenebo.format.staff
+    format: <gray>[<blue>Staff</blue>]</gray> <gray><</gray><white>{display_name}</white><gray>></gray>
+      <white>{message}</white>
+
+# Advanced settings
+settings:
+  # Should legacy color codes be parsed in player messages?
+  parse-player-colors: true
+
+  # Maximum permission-based format to check
+  # Higher values might impact performance slightly
+  max-format-checks: 10
