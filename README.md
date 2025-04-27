@@ -72,7 +72,11 @@ This plugin is still a work in progress, and I’d appreciate any feedback or fi
 Thanks for trying Little Nebo! 😊
 
 ---
+## 📚 Documentation
 
+- [View JavaDocs](https://cutelilreno.github.io/LittleNebo/)
+
+---
 ## 📜 License
 
 MIT License — see `LICENSE` for details.
