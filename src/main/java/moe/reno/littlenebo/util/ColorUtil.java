@@ -8,19 +8,27 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 /**
- * Utility class for converting between legacy Minecraft color codes, MiniMessage-formatted text,
- * and Adventure Components. Provides both full-featured parsing (for trusted sources) and
- * a restricted safe parser (for untrusted player input).
+ * ColorUtil Utility
+ * <p>
+ *     Various utilities to help use MiniMessage and legacy codes with Adventure.
+ * </p>
  */
 public class ColorUtil {
-    /**
-     * The full MiniMessage parser, with all standard tags enabled (colors, gradients, hover, click, etc.).
-     */
-    private static final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     /**
-     * The safe MiniMessage parser, restricted to only color, gradient, rainbow, pride, and decoration tags.
-     * Used for parsing untrusted player input to avoid click/hover exploits.
+     * Unsafe MiniMessage parser
+     * <p>
+     *     Resolves all MiniMessage tags! Do not use on untrusted input!
+     * </p>
+     */
+    private static final MiniMessage unsafeMiniMessage = MiniMessage.miniMessage();
+
+    /**
+     * Safe MiniMessage parser
+     * <p>
+     *     Only color, gradient, rainbow, pride, and decoration tags will resolve.
+     *     Used for untrusted player input.
+     * </p>
      */
     private static final MiniMessage safeMiniMessage = MiniMessage.builder()
             .tags(TagResolver.builder()
@@ -35,10 +43,10 @@ public class ColorUtil {
             .build();
 
     /**
-     * Serializes a Component to its plain-text representation, stripping out all formatting.
+     * Serializes a Component to its string without formatting.
      *
      * @param component the Component to convert; may be null
-     * @return a plain String (never null); empty if the component was null
+     * @return a String (or empty string if component was null)
      */
     public static String componentToString(Component component) {
         if (component == null) {
@@ -48,13 +56,13 @@ public class ColorUtil {
     }
 
     /**
-     * Parses legacy Minecraft color codes (using '{@literal &}' prefixes) into an Adventure Component.
+     * Convert strings with legacy Minecraft color codes (using '{@literal &}' prefixes) into MiniMessage.
      *<p>
      * Example: {@code "&cHello &6World"} → {@code <red>Hello <gold>World</gold></red>}
      *</p>
      *
      * @param text a String containing '{@literal &}' legacy color codes
-     * @return a formatted Component; never null
+     * @return a formatted Component
      */
     public static Component legacyToComponent(String text) {
         return LegacyComponentSerializer.legacyAmpersand().deserialize(text);
@@ -71,24 +79,28 @@ public class ColorUtil {
      * @return a formatted Component; never null
      */
     public static Component parseMiniMessage(String text) {
-        return miniMessage.deserialize(text);
+        return  unsafeMiniMessage.deserialize(text);
     }
 
     /**
-     * Parses text that may contain mixed legacy ('{@literal &}') codes and MiniMessage tags,
-     * converting '{@literal &}' codes into MiniMessage equivalent tags, then parsing with the safe parser.
-     *<p>
-     * Use this for untrusted input (e.g. player chat) to allow styling while preventing interactive tags.
-     *</p>
+     * Mixed Formatting parser
+     *
+     * For processing mixed legacy ('{@literal &}') codes and MiniMessage tags together.
+     * Legacy codes are converted to MiniMessage so the entire String is only MiniMessage,
+     * then put through the safe parser.
+     * <p>
+     *     Use this for untrusted input (like player chat) to allow styling without interactive tags.
+     * </p>
      *
      * @param text a String containing both '{@literal &}' codes and MiniMessage tags
      * @return a formatted Component, restricted to safe styling; never null
      */
     public static Component parseMixedFormattingComponent(String text) {
+        // omg so messy and doesn't support &#rrggbb codes
+        // TODO: Rewrite to not look like a dumpster fire, and bring support for rrggbb codes!
         text = text
                 .replace("&0", "<black>")
                 .replace("&1", "<dark_blue>")
-                .replace("&2", "<dark_green>")
                 .replace("&2", "<dark_green>")
                 .replace("&3", "<dark_aqua>")
                 .replace("&4", "<dark_red>")
@@ -115,7 +127,7 @@ public class ColorUtil {
     /**
      * Parses a MiniMessage String with only safe styling tags (color, gradient, rainbow, pride, decorations).
      *<p>
-     * Should be used for untrusted input that should not allow hover/click interactions.
+     * Should be used only for untrusted input. Does not process legacy codes.
      *</p>
      *
      * @param text a String containing MiniMessage styling tags

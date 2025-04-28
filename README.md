@@ -14,15 +14,14 @@ Created to be a functional and configurable chat plugin, but as lean as possible
 - **PlaceholderAPI support**: Use any PlaceholderAPI placeholder in configuration.
 - **Optional legacy codes**: Enable `&`-style color codes in player messages if you prefer.
 - **Safe parsing**: Player input is sanitized to prevent interactive tags (click, hover, etc.).
-- **Easy** `/littlenebo` **commands**: Toggle debug, and preview formats in-game. (reload coming soon 🙏)
-
+- **Easy** `/littlenebo` **commands**: Toggle debug, and preview formats in-game and reload.
 ---
 
 ## 📥 Installation
 
 1. Build or download `LittleNebo.jar`.
 2. Place it into your server’s `/plugins/` folder.
-3. Install PlaceholderAPI (required)
+3. Install PlaceholderAPI (optional)
 4. Start or restart the server.
 5. Edit `plugins/LittleNebo/config.yml` to adjust formats and settings.
 
@@ -34,7 +33,7 @@ Created to be a functional and configurable chat plugin, but as lean as possible
 
 | Command                        | Permission         | Description                                     |
 | ------------------------------ | ------------------ | ----------------------------------------------- |
-| `/littlenebo reload`           | `littlenebo.admin` | Reloads the plugin configuration. (not working) |
+| `/littlenebo reload`           | `littlenebo.admin` | Reloads the plugin configuration.               |
 | `/littlenebo debug`            | `littlenebo.admin` | Toggles debug logging.                          |
 | `/littlenebo debug config`     | `littlenebo.admin` | Shows current config values in chat.            |
 | `/littlenebo debug test <msg>` | `littlenebo.admin` | Previews how `<msg>` will be formatted.         |
@@ -42,13 +41,13 @@ Created to be a functional and configurable chat plugin, but as lean as possible
 ### Permissions
 
 - `littlenebo.admin` — manage plugin (reload, debug)
-- `littlenebo.format.*` — use custom formats (admin, staff, vip, etc.)
+- `littlenebo.format.*` — use custom formats (admin, staff, vip, donator, etc.)
 
 ---
 
 ## ⚙️ Configuration (`config.yml`)
 
-A sample snippet for default format:
+A sample snippet for a format:
 
 ```yaml
 formats:

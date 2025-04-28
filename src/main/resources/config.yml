@@ -24,8 +24,7 @@ formats:
 
   # Default format for all players
   default:
-    format: <gray>[<green>Chat</green>]</gray> <gray><</gray><white>{display_name}</white><gray>></gray>
-      <white>{message}</white>
+    format: <gray><</gray><white>{display_name}</white><gray>></gray> <white>{message}</white>
 
   # If you want to use legacy format instead, uncomment and modify the line below (untested)
   # legacy-format: "&7[&aChat&7] &f{display_name}&7: &f{message}"
@@ -38,16 +37,11 @@ formats:
       <white>{message}</white>
 
   # Staff format - requires littlenebo.format.staff permission
-  staff:
-    permission: littlenebo.format.staff
-    format: <gray>[<blue>Staff</blue>]</gray> <gray><</gray><white>{display_name}</white><gray>></gray>
-      <white>{message}</white>
+  #staff:
+  #  permission: littlenebo.format.staff
+  #  format: <gray>[<blue>Staff</blue>]</gray> <gray><</gray><white>{display_name}</white><gray>></gray> <white>{message}</white>
 
 # Advanced settings
 settings:
   # Should legacy color codes be parsed in player messages?
   parse-player-colors: true
-
-  # Maximum permission-based format to check
-  # Higher values might impact performance slightly
-  max-format-checks: 10

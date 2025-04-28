@@ -2,33 +2,22 @@ package moe.reno.littlenebo.config;
 
 import moe.reno.littlenebo.LittleNebo;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Manages loading and access to the plugin's configuration values and chat formats.
- * <p>
- * This class handles reading the YAML config file, tracking runtime settings like debug
- * mode and color parsing, and building a registry of {@link FormatConfig} instances
- * for each named chat format section.
- * </p>
- */
 public class ConfigManager {
     private final LittleNebo plugin;
     private boolean debug;
-    private boolean parsePlayerColors;
+    private boolean legacyPlayerColors;
     private int maxFormatChecks;
     private final Map<String, FormatConfig> formats = new HashMap<>();
     private FormatConfig defaultFormat;
 
-    /**
-     * Constructs a new ConfigManager tied to the given plugin instance.
-     *
-     * @param plugin the main plugin class (used to save/reload config and log)
-     */
     public ConfigManager(LittleNebo plugin) {
         this.plugin = plugin;
     }
@@ -36,28 +25,24 @@ public class ConfigManager {
     /**
      * Loads or reloads the configuration from disk.
      * <p>
-     * - Saves the default config if missing.
-     * - Reads general settings (debug, parse-player-colors, max-format-checks).
-     * - Parses all defined chat format sections into {@link FormatConfig} objects.
-     * - Ensures a fallback "default" format always exists.
+     * - Creates default conf, if necessary.
+     * - Load config and parses chat format
      * </p>
      */
     public void loadConfig() {
+        // TODO: Rewrite to fail more gracefully with yaml errors. Currently it's works as intended, but spams console
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
         FileConfiguration config = plugin.getConfig();
 
-        // Load debug setting
+        formats.clear();
+
+
         debug = config.getBoolean("debug", false);
 
-        // Load settings
         ConfigurationSection settings = config.getConfigurationSection("settings");
+        legacyPlayerColors = settings.getBoolean("parse-player-colors", true);
 
-        parsePlayerColors = settings.getBoolean("parse-player-colors", false);
-        maxFormatChecks = settings.getInt("max-format-checks", 10);
-
-        // Load formats
-        formats.clear();
         ConfigurationSection formatsSection = config.getConfigurationSection("formats");
         if (formatsSection != null) {
             for (String key : formatsSection.getKeys(false)) {
@@ -77,66 +62,36 @@ public class ConfigManager {
             }
         }
 
-        // Ensure we have a default format
+        // Temp fix allows plugin to still work if syntax error in conf. Will need to rewrite loadConfig()
         if (defaultFormat == null) {
-            defaultFormat = new FormatConfig("<gray>{display_name}</gray><white>: {message}</white>", "", "");
+            defaultFormat = new FormatConfig("<gray><{display_name}></gray> <white>{message}</white>", "", "true");
             formats.put("default", defaultFormat);
         }
 
         plugin.getLogger().info("Loaded " + formats.size() + " chat formats");
     }
 
-    /**
-     * @return true if debug mode is currently enabled (detailed logging on)
-     */
     public boolean isDebugEnabled() {
         return debug;
     }
 
-    /**
-     * Toggles the debug mode setting on or off, persists it to disk, and returns the new value.
-     *
-     * @return the updated debug state after toggling
-     */
     public boolean toggleDebug() {
         debug = !debug;
         plugin.getConfig().set("debug", debug);
         plugin.saveConfig();
+        loadConfig(); // bit of a weird hack, but harmless
         return debug;
     }
 
-    /**
-     * @return whether player-entered color codes (ampersand '{@literal &}') should be parsed in chat
-     */
-    public boolean isParsePlayerColors() {
-        return parsePlayerColors;
+    public boolean isPlayerLegacyColorsEnabled() {
+        return legacyPlayerColors;
     }
 
-    /**
-     * @return the maximum number of permission-based format variants to check per message
-     */
-    public int getMaxFormatChecks() {
-        return maxFormatChecks;
-    }
-
-    /**
-     * Retrieves the appropriate {@link FormatConfig} for the given player.
-     * <p>
-     * Iterates through all configured formats in insertion order, returning the first
-     * one whose permission node the player has. If none match, returns the "default" format.
-     * </p>
-     *
-     * @param player the player whose permissions should be checked
-     * @return the matching FormatConfig, or the default format if none match
-     */
     public FormatConfig getFormatForPlayer(Player player) {
         for (Map.Entry<String, FormatConfig> entry : formats.entrySet()) {
             FormatConfig format = entry.getValue();
-            if (!format.hasPermission()) {
-                continue;
-            }
 
-            if (player.hasPermission(format.getPermission())) {
+            if (format.hasPermission() && player.hasPermission(format.groupPermission())) {
                 return format;
             }
         }

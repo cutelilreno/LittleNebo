@@ -13,92 +13,74 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+import static org.bukkit.Bukkit.getServer;
+
 /**
- * Manages interception and formatting of player chat messages.
+ * Manages chat and formatting of player messages.
  * <p>
- * Listens for the Paper AsyncChatEvent, captures raw player input,
- * and delegates rendering to {@link NeboChatRenderer}, which in turn
- * uses {@link ChatManager#formatMessage(Player, String)} to apply
- * MiniMessage or legacy formatting based on the plugin configuration.
+ *     Delegates rendering to {@link NeboChatRenderer}, which
+ *     uses {@link ChatManager#formatMessage(Player, String)} to apply
+ *     MiniMessage or legacy formatting based on the conf.
  * </p>
  */
 public class ChatManager implements Listener {
     private final LittleNebo plugin;
     private final ConfigManager configManager;
     private final NeboChatRenderer chatRenderer;
+    private final boolean placeholdersEnabled = getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
 
-    /**
-     * Constructs a ChatManager and registers a custom chat renderer.
-     *
-     * @param plugin        main plugin instance for access to logger and config
-     * @param configManager central config manager containing chat settings and formats
-     */
     public ChatManager(LittleNebo plugin, ConfigManager configManager) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.chatRenderer = new NeboChatRenderer(plugin);
     }
 
-    /**
-     * Handles incoming chat events at high priority.
-     * <p>
-     * Converts the incoming Component message to plain text,
-     * stores it for rendering, and assigns a custom renderer
-     * so that other plugins still receive the original event.
-     * </p>
-     *
-     * @param event the async chat event containing the player's message
-     */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
 
-        // Get the message as string
         Component originalMessage = event.message();
-        String messageStr = ColorUtil.componentToString(originalMessage);
 
-        // IMPORTANT: We do not cancel the event, but we set a renderer
-        // This allows other plugins to still receive and process the event
         event.renderer(chatRenderer);
 
-        // Store the processed message in the renderer
+        String messageStr = ColorUtil.componentToString(originalMessage);
         chatRenderer.setLastMessage(player, messageStr);
 
-        // Debug information
-        plugin.debug("Chat event processed for " + player.getName());
-        plugin.debug("Original message: " + ColorUtil.componentToString(originalMessage));
-        plugin.debug("Processed message: " + messageStr);
+        if(configManager.isDebugEnabled()) {
+            plugin.debug("Chat event processed for " + player.getName());
+            plugin.debug("Original message: " + ColorUtil.componentToString(originalMessage));
+            plugin.debug("Processed message: " + messageStr);
+        }
     }
 
     /**
-     * Formats a chat message for display to a viewer.
+     * Format a chat message.
      * <p>
-     * Chooses a {@link FormatConfig} based on player permissions,
-     * then applies either legacy '{@literal &}' codes or MiniMessage templates.
-     * PlaceholderAPI placeholders are resolved in names and templates.
+     *     Chooses and applies a format based on player permissions and conf,
      * </p>
      *
-     * @param player  the player who sent the chat (used for permissions/placeholders)
-     * @param message the raw message text (no formatting)
-     * @return a fully formatted {@link Component} ready to send
+     * @param player  the player who sent the chat
+     * @param message the raw message text
+     * @return a formatted {@link Component}
      */
     public Component formatMessage(Player player, String message) {
         FormatConfig format = configManager.getFormatForPlayer(player);
 
-        final String displayName = PlaceholderAPI.setPlaceholders(player, player.getDisplayName());
+        final String displayName = player.getDisplayName();
 
-        final Component processedMessage = configManager.isParsePlayerColors()
+        final Component processedMessage = configManager.isPlayerLegacyColorsEnabled()
                 ? ColorUtil.parseMixedFormattingComponent(message)
                 : ColorUtil.parseSafeMiniMessage(message);
 
-        String formatTemplate = format.hasLegacyFormat()
-                ? format.getLegacyFormat()
-                : format.getFormat();
+        String formatTemplate = format.hasLegacyFormatConf()
+                ? format.legacyFormat()
+                : format.format();
 
-        // Apply PlaceholderAPI to the template (no check needed anymore)
-        formatTemplate = PlaceholderAPI.setPlaceholders(player, formatTemplate);
+        if(placeholdersEnabled) {
+            formatTemplate = PlaceholderAPI.setPlaceholders(player, formatTemplate);
+        }
 
-        if (format.hasLegacyFormat()) {
+        if (format.hasLegacyFormatConf()) {
             String legacyFormatted = formatTemplate
                     .replace("{display_name}", displayName)
                     .replace("{message}", PlainTextComponentSerializer.plainText().serialize(processedMessage));

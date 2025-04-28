@@ -1,11 +1,11 @@
 name: LittleNebo
-version: 1.0.0
+version: 1.0.1
 main: moe.reno.littlenebo.LittleNebo
 api-version: 1.21
 author: cutelilreno
-description: A simple chat plugin with MiniMessage support
-website: https://reno.moe
-depend: [PlaceholderAPI]
+description: A lightweight chat plugin with legacy, MiniMessage and PlaceholderAPI support.
+website: https://github.com/cutelilreno/LittleNebo
+softdepend: [PlaceholderAPI]
 commands:
   littlenebo:
     description: Little Nebo main command

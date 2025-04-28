@@ -8,8 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Main plugin class for Little Nebo.
  * <p>
- * Handles enabling/disabling the plugin, instantiating managers, and
- * wiring up event listeners and commands.
+ * Handles enabling/disabling the plugin
  * </p>
  */
 public class LittleNebo extends JavaPlugin {
@@ -18,30 +17,23 @@ public class LittleNebo extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Initialize config manager
         configManager = new ConfigManager(this);
         configManager.loadConfig();
-
-        // Initialize chat manager
         chatManager = new ChatManager(this, configManager);
-
-        // Register events
         getServer().getPluginManager().registerEvents(chatManager, this);
 
-        // Register commands
         getCommand("littlenebo").setExecutor(new LittleNeboCommand(this));
 
-        getLogger().info("Little Nebo has been enabled!");
+        getLogger().info("Little Nebo enabled.");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("Little Nebo has been disabled!");
+        getLogger().info("Little Nebo disabled.");
     }
 
     /**
-     * Gets the ConfigManager, which provides access to all plugin settings
-     * and chat formats.
+     * Gets the ConfigManager to access plugin settings
      *
      * @return the active ConfigManager instance
      */
@@ -50,7 +42,7 @@ public class LittleNebo extends JavaPlugin {
     }
 
     /**
-     * Gets the ChatManager, responsible for formatting and rendering chat messages.
+     * Gets the ChatManager that handles processing and rendering chat messages.
      *
      * @return the active ChatManager instance
      */
@@ -59,12 +51,13 @@ public class LittleNebo extends JavaPlugin {
     }
 
     /**
-     * Logs a message at INFO level, but only if debug mode is enabled in config.
+     * Logs a message at INFO, but only if debug mode is enabled in config.
      *
      * @param message the debug text to log
      */
+    // TODO: Relocate to a more sensible area in code
     public void debug(String message) {
-        if (getConfig().getBoolean("debug", false)) {
+        if (getConfig().getBoolean("debug", false)) { // forgot why there's a check TODO: investigate if necessary
             getLogger().info("[DEBUG] " + message);
         }
     }
