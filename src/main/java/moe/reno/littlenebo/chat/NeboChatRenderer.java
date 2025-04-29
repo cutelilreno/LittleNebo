@@ -72,4 +72,7 @@ public class NeboChatRenderer implements ChatRenderer {
     public void setLastMessage(Player player, String message) {
         lastMessages.put(player.getUniqueId(), message);
     }
+    public void removeLastMessage(Player player) {
+        lastMessages.remove(player.getUniqueId());
+    }
 }

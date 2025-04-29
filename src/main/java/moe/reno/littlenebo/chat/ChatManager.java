@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -51,6 +52,15 @@ public class ChatManager implements Listener {
             plugin.debug("Original message: " + ColorUtil.componentToString(originalMessage));
             plugin.debug("Processed message: " + messageStr);
         }
+    }
+
+    /*
+    Honestly unless you have an insane influx of players joining and leaving,
+    this probably isn't needed. But it's here for completeness.
+     */
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        chatRenderer.removeLastMessage(event.getPlayer());
     }
 
     /**
