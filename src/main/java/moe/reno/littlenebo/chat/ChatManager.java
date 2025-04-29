@@ -44,7 +44,8 @@ public class ChatManager implements Listener {
 
         event.renderer(chatRenderer);
 
-        String messageStr = ColorUtil.componentToStringWithPride(originalMessage);
+        String messageStr = ColorUtil.componentToString(originalMessage);
+        messageStr = ColorUtil.prideTagToGradient(messageStr);
         chatRenderer.setLastMessage(player, messageStr);
 
         if(configManager.isDebugEnabled()) {

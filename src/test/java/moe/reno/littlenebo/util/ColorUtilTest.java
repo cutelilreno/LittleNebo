@@ -15,12 +15,12 @@ public class ColorUtilTest {
     @Test
     public void testComponentToString() {
         // Test with null component
-        assertEquals("", ColorUtil.componentToStringWithPride(null),
+        assertEquals("", ColorUtil.componentToString(null),
                 "Null component should return empty string");
         
         // Test with a simple component
         Component component = Component.text("Hello World");
-        assertEquals("Hello World", ColorUtil.componentToStringWithPride(component),
+        assertEquals("Hello World", ColorUtil.componentToString(component),
                 "Component text should be extracted correctly");
     }
     
@@ -34,7 +34,7 @@ public class ColorUtilTest {
         Component component = ColorUtil.legacyToComponent(legacyText);
         
         // We can't easily test the color directly, but we can verify the text content
-        assertEquals("Red Gold", ColorUtil.componentToStringWithPride(component),
+        assertEquals("Red Gold", ColorUtil.componentToString(component),
                 "Legacy text content should be preserved");
     }
     
@@ -48,7 +48,7 @@ public class ColorUtilTest {
         Component component = ColorUtil.parseMixedFormattingComponent(mixedText);
         
         // Verify the text content
-        assertEquals("Red Blue", ColorUtil.componentToStringWithPride(component),
+        assertEquals("Red Blue", ColorUtil.componentToString(component),
                 "Mixed formatting text content should be preserved");
     }
 }
