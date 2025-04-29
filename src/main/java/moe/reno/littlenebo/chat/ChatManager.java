@@ -50,16 +50,19 @@ public class ChatManager implements Listener {
         if(configManager.isDebugEnabled()) {
             plugin.debug("Chat event processed for " + player.getName());
             plugin.debug("Original message: " + ColorUtil.componentToString(originalMessage));
-            plugin.debug("Processed message: " + messageStr);
+
+            if(configManager.isPlayerLegacyColorsEnabled()) {
+                plugin.debug("Processed message: " + ColorUtil.serialiseMiniMessage(ColorUtil.parseMixedFormattingComponent(messageStr)));
+            } else plugin.debug("Processed message: " + messageStr);
+
         }
     }
 
-    /*
-    Honestly unless you have an insane influx of players joining and leaving,
-    this probably isn't needed. But it's here for completeness.
-     */
+
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        // Honestly unless you have an insane influx of players joining and leaving,
+        // this probably isn't needed. But it's here for completeness.
         chatRenderer.removeLastMessage(event.getPlayer());
     }
 

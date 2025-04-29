@@ -36,6 +36,7 @@ public class ColorUtil {
                     .resolver(StandardTags.gradient())
                     .resolver(StandardTags.rainbow())
                     .resolver(StandardTags.pride())
+                    .resolver(StandardTags.reset())
                     .resolver(StandardTags.decorations()
                     )
                     .build()
@@ -81,6 +82,18 @@ public class ColorUtil {
     public static Component parseMiniMessage(String text) {
         return  unsafeMiniMessage.deserialize(text);
     }
+
+    /**
+     * Serializes a MiniMessage Component into its string with formatting.
+     *
+     * @param component a MiniMessage component
+     * @return a formatted string
+     */
+    public static String serialiseMiniMessage(Component component) {
+        String serialized = MiniMessage.miniMessage().serialize(component);
+        return serialized;
+    }
+
 
     /**
      * Mixed Formatting parser
