@@ -44,7 +44,7 @@ public class ChatManager implements Listener {
 
         event.renderer(chatRenderer);
 
-        String messageStr = ColorUtil.componentToString(originalMessage);
+        String messageStr = ColorUtil.componentToStringWithPride(originalMessage);
         chatRenderer.setLastMessage(player, messageStr);
 
         if(configManager.isDebugEnabled()) {
