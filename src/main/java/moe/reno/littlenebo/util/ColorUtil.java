@@ -96,9 +96,9 @@ public class ColorUtil {
      * @return a formatted Component, restricted to safe styling; never null
      */
     public static Component parseMixedFormattingComponent(String text) {
-        // omg so messy and doesn't support &#rrggbb codes
-        // TODO: Rewrite to not look like a dumpster fire, and bring support for rrggbb codes!
+        // im just going to live with this
         text = text
+                .replaceAll("(?i)&#([0-9a-f]{6})", "<#$1>")
                 .replace("&0", "<black>")
                 .replace("&1", "<dark_blue>")
                 .replace("&2", "<dark_green>")
