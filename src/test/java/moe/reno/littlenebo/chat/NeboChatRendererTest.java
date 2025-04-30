@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for the NeboChatRenderer class.
  */
-public class NeboChatRendererTest {
+class NeboChatRendererTest {
 
     @Mock
     private LittleNebo plugin;
@@ -62,7 +62,7 @@ public class NeboChatRendererTest {
      * Test that render correctly formats a message for a player viewer.
      */
     @Test
-    public void testRenderForPlayerViewer() {
+    void testRenderForPlayerViewer() {
         // Set up a message
         renderer.setLastMessage(source, "Test message");
         
@@ -83,7 +83,7 @@ public class NeboChatRendererTest {
      * Test that render correctly formats a message for a console viewer.
      */
     @Test
-    public void testRenderForConsoleViewer() {
+    void testRenderForConsoleViewer() {
         // Set up a message
         renderer.setLastMessage(source, "Test message");
         
@@ -104,7 +104,7 @@ public class NeboChatRendererTest {
      * Test that render handles the case where no message was stored for the player.
      */
     @Test
-    public void testRenderWithNoStoredMessage() {
+    void testRenderWithNoStoredMessage() {
         // Don't set a message for the player
         
         // Call the method to test
@@ -121,7 +121,7 @@ public class NeboChatRendererTest {
      * Test that setLastMessage correctly stores a message for a player.
      */
     @Test
-    public void testSetLastMessage() {
+    void testSetLastMessage() {
         // Call the method to test
         renderer.setLastMessage(source, "Test message");
         
@@ -136,7 +136,7 @@ public class NeboChatRendererTest {
      * Test that removeLastMessage correctly removes a stored message for a player.
      */
     @Test
-    public void testRemoveLastMessage() {
+    void testRemoveLastMessage() {
         // Set up a message
         renderer.setLastMessage(source, "Test message");
         

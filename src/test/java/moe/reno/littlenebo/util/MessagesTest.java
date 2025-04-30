@@ -8,13 +8,13 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests for the Messages utility class.
  */
-public class MessagesTest {
+class MessagesTest {
 
     /**
      * Test that error creates a red-colored message.
      */
     @Test
-    public void testError() {
+    void testError() {
         // Create an error message
         Component message = Messages.error("Error message");
         
@@ -33,7 +33,7 @@ public class MessagesTest {
      * Test that success creates a green-colored message.
      */
     @Test
-    public void testSuccess() {
+    void testSuccess() {
         // Create a success message
         Component message = Messages.success("Success message");
         
@@ -52,7 +52,7 @@ public class MessagesTest {
      * Test that title creates a gold-colored message.
      */
     @Test
-    public void testTitle() {
+    void testTitle() {
         // Create a title message
         Component message = Messages.title("Title message");
         
@@ -71,7 +71,7 @@ public class MessagesTest {
      * Test that info creates a gray-colored message.
      */
     @Test
-    public void testInfo() {
+    void testInfo() {
         // Create an info message
         Component message = Messages.info("Info message");
         
@@ -90,7 +90,7 @@ public class MessagesTest {
      * Test that all message types handle empty strings correctly.
      */
     @Test
-    public void testEmptyMessages() {
+    void testEmptyMessages() {
         // Create empty messages of each type
         Component errorMessage = Messages.error("");
         Component successMessage = Messages.success("");

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for the LittleNeboCommand class.
  */
-public class LittleNeboCommandTest {
+class LittleNeboCommandTest {
 
     @Mock
     private LittleNebo plugin;
@@ -71,7 +71,7 @@ public class LittleNeboCommandTest {
      * Test that onCommand handles the case where the sender doesn't have permission.
      */
     @Test
-    public void testOnCommandNoPermission() {
+    void testOnCommandNoPermission() {
         // Set up the test
         when(sender.hasPermission("littlenebo.admin")).thenReturn(false);
 
@@ -89,7 +89,7 @@ public class LittleNeboCommandTest {
      * Test that onCommand handles the case where no arguments are provided.
      */
     @Test
-    public void testOnCommandNoArgs() {
+    void testOnCommandNoArgs() {
         // Call the method to test
         boolean result = littleNeboCommand.onCommand(sender, command, "littlenebo", new String[0]);
 
@@ -104,7 +104,7 @@ public class LittleNeboCommandTest {
      * Test that onCommand handles the reload subcommand.
      */
     @Test
-    public void testOnCommandReload() {
+    void testOnCommandReload() {
         // Call the method to test
         boolean result = littleNeboCommand.onCommand(sender, command, "littlenebo", new String[]{"reload"});
 
@@ -122,7 +122,7 @@ public class LittleNeboCommandTest {
      * Test that onCommand handles the debug subcommand with no additional arguments.
      */
     @Test
-    public void testOnCommandDebugToggle() {
+    void testOnCommandDebugToggle() {
         // Set up the test
         when(configManager.toggleDebug()).thenReturn(true);
 
@@ -143,7 +143,7 @@ public class LittleNeboCommandTest {
      * Test that onCommand handles the debug config subcommand.
      */
     @Test
-    public void testOnCommandDebugConfig() {
+    void testOnCommandDebugConfig() {
         // Set up the test
         when(configManager.isDebugEnabled()).thenReturn(true);
         when(configManager.isPlayerLegacyColorsEnabled()).thenReturn(true);
@@ -162,7 +162,7 @@ public class LittleNeboCommandTest {
      * Test that onCommand handles the debug test subcommand.
      */
     @Test
-    public void testOnCommandDebugTest() {
+    void testOnCommandDebugTest() {
         // Set up the ChatManager mock to return a Component when formatMessage is called
         when(chatManager.formatMessage(any(Player.class), anyString())).thenReturn(Component.text("Formatted message"));
 
@@ -181,7 +181,7 @@ public class LittleNeboCommandTest {
      * Test that onCommand handles the debug test subcommand with insufficient arguments.
      */
     @Test
-    public void testOnCommandDebugTestInsufficientArgs() {
+    void testOnCommandDebugTestInsufficientArgs() {
         // Call the method to test
         boolean result = littleNeboCommand.onCommand(sender, command, "littlenebo", new String[]{"debug", "test"});
 
@@ -196,7 +196,7 @@ public class LittleNeboCommandTest {
      * Test that onCommand handles unknown debug subcommands.
      */
     @Test
-    public void testOnCommandDebugUnknown() {
+    void testOnCommandDebugUnknown() {
         // Call the method to test
         boolean result = littleNeboCommand.onCommand(sender, command, "littlenebo", new String[]{"debug", "unknown"});
 
@@ -211,7 +211,7 @@ public class LittleNeboCommandTest {
      * Test that onCommand handles unknown subcommands.
      */
     @Test
-    public void testOnCommandUnknownSubcommand() {
+    void testOnCommandUnknownSubcommand() {
         // Call the method to test
         boolean result = littleNeboCommand.onCommand(sender, command, "littlenebo", new String[]{"unknown"});
 
@@ -226,7 +226,7 @@ public class LittleNeboCommandTest {
      * Test that onTabComplete returns the correct completions.
      */
     @Test
-    public void testOnTabComplete() {
+    void testOnTabComplete() {
         // Test with no args
         List<String> completions = littleNeboCommand.onTabComplete(sender, command, "littlenebo", new String[]{""});
         assertEquals(2, completions.size(), "Should return all subcommands when no args");
