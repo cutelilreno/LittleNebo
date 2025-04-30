@@ -30,17 +30,22 @@ public class ConfigManager {
      */
     public void loadConfig() {
         // TODO: Rewrite to fail more gracefully with yaml errors. Currently it's works as intended, but spams console
-        plugin.saveDefaultConfig();
-        plugin.reloadConfig();
+        try {
+            plugin.saveDefaultConfig();
+            plugin.reloadConfig();
+        } catch (Exception e) {
+            plugin.getLogger().warning("Failed to load configuration!");
+            e.printStackTrace();
+        }
         FileConfiguration config = plugin.getConfig();
 
         formats.clear();
 
-
         debug = config.getBoolean("debug", false);
 
         ConfigurationSection settings = config.getConfigurationSection("settings");
-        legacyPlayerColors = settings.getBoolean("parse-player-colors", true);
+        // null check in case someone deletes settings section in config.yml
+        legacyPlayerColors = settings != null && settings.getBoolean("parse-player-colors", true);
 
         ConfigurationSection formatsSection = config.getConfigurationSection("formats");
         if (formatsSection != null) {
