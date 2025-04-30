@@ -14,7 +14,6 @@ public class ConfigManager {
     private final LittleNebo plugin;
     private boolean debug;
     private boolean legacyPlayerColors;
-    private int maxFormatChecks;
     private final Map<String, FormatConfig> formats = new HashMap<>();
     private FormatConfig defaultFormat;
 

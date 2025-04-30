@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for the ConfigManager class.
  */
-public class ConfigManagerTest {
+class ConfigManagerTest {
 
     @Mock
     private LittleNebo plugin;
@@ -84,7 +84,7 @@ public class ConfigManagerTest {
      * Test that loadConfig correctly loads configuration from the plugin.
      */
     @Test
-    public void testLoadConfig() {
+    void testLoadConfig() {
         // Call the method to test
         configManager.loadConfig();
 
@@ -104,7 +104,7 @@ public class ConfigManagerTest {
      * Test that isDebugEnabled returns the correct value.
      */
     @Test
-    public void testIsDebugEnabled() {
+    void testIsDebugEnabled() {
         // Set up the mock to return true for debug
         when(config.getBoolean("debug", false)).thenReturn(true);
 
@@ -128,7 +128,7 @@ public class ConfigManagerTest {
      * Test that toggleDebug correctly toggles the debug setting.
      */
     @Test
-    public void testToggleDebug() {
+    void testToggleDebug() {
         // Set up initial state
         when(config.getBoolean("debug", false)).thenReturn(false);
         configManager.loadConfig();
@@ -155,7 +155,7 @@ public class ConfigManagerTest {
      * Test that isPlayerLegacyColorsEnabled returns the correct value.
      */
     @Test
-    public void testIsPlayerLegacyColorsEnabled() {
+    void testIsPlayerLegacyColorsEnabled() {
         // Set up the mock to return true
         when(settingsSection.getBoolean("parse-player-colors", true)).thenReturn(true);
 
@@ -179,7 +179,7 @@ public class ConfigManagerTest {
      * Test that getFormatForPlayer returns the correct format based on permissions.
      */
     @Test
-    public void testGetFormatForPlayer() {
+    void testGetFormatForPlayer() {
         // Load the config
         configManager.loadConfig();
 
@@ -208,7 +208,7 @@ public class ConfigManagerTest {
      * Test that the default format is created if missing from config.
      */
     @Test
-    public void testDefaultFormatFallback() {
+    void testDefaultFormatFallback() {
         // Set up the formats section to return null for default
         when(formatsSection.getConfigurationSection("default")).thenReturn(null);
 
