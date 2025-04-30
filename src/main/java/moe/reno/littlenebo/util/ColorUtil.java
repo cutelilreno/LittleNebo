@@ -142,10 +142,13 @@ public class ColorUtil {
      *</p>
      *
      * @param text a String containing MiniMessage tags
-     * @return a formatted Component
+     * @return a formatted Component; never null
      */
     public static Component parseMiniMessage(String text) {
-        return  unsafeMiniMessage.deserialize(text);
+        if (text == null) {
+            return Component.empty();
+        }
+        return unsafeMiniMessage.deserialize(text);
     }
 
     /**
@@ -223,4 +226,3 @@ public class ColorUtil {
     }
 
 }
-

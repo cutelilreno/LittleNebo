@@ -28,12 +28,24 @@ public class ChatManager implements Listener {
     private final LittleNebo plugin;
     private final ConfigManager configManager;
     private final NeboChatRenderer chatRenderer;
-    private final boolean placeholdersEnabled = getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
+    private final boolean placeholdersEnabled;
 
     public ChatManager(LittleNebo plugin, ConfigManager configManager) {
         this.plugin = plugin;
         this.configManager = configManager;
         this.chatRenderer = new NeboChatRenderer(plugin);
+
+        // Safely check if PlaceholderAPI is enabled
+        boolean placeholdersAvailable = false;
+        try {
+            if (getServer() != null && getServer().getPluginManager() != null) {
+                placeholdersAvailable = getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
+            }
+        } catch (Exception e) {
+            // In test environments, this might throw an exception
+            plugin.getLogger().warning("Error checking for PlaceholderAPI: " + e.getMessage());
+        }
+        this.placeholdersEnabled = placeholdersAvailable;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
