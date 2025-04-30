@@ -49,7 +49,6 @@ public class ConfigManager {
                 ConfigurationSection formatSection = formatsSection.getConfigurationSection(key);
                 if (formatSection != null) {
                     String format = formatSection.getString("format", "");
-                    format.replace("\\n", "\n");
                     String legacyFormat = formatSection.getString("legacy-format", "");
                     String permission = formatSection.getString("permission", "");
 
