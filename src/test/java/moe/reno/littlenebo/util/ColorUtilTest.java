@@ -7,13 +7,13 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests for the ColorUtil class.
  */
-public class ColorUtilTest {
+class ColorUtilTest {
 
     /**
      * Test that componentToString correctly converts a Component to a plain string.
      */
     @Test
-    public void testComponentToString() {
+    void testComponentToString() {
         // Test with null component
         assertEquals("", ColorUtil.componentToString(null),
                 "Null component should return empty string");
@@ -28,7 +28,7 @@ public class ColorUtilTest {
      * Test that legacyToComponent correctly converts legacy color codes.
      */
     @Test
-    public void testLegacyToComponent() {
+    void testLegacyToComponent() {
         // Test basic legacy color conversion
         String legacyText = "&cRed &6Gold";
         Component component = ColorUtil.legacyToComponent(legacyText);
@@ -42,7 +42,7 @@ public class ColorUtilTest {
      * Test that parseMixedFormattingComponent correctly handles mixed formatting.
      */
     @Test
-    public void testParseMixedFormattingComponent() {
+    void testParseMixedFormattingComponent() {
         // Test mixed formatting
         String mixedText = "&cRed <blue>Blue</blue>";
         Component component = ColorUtil.parseMixedFormattingComponent(mixedText);
@@ -67,7 +67,7 @@ public class ColorUtilTest {
      * Test that parseMiniMessage correctly parses MiniMessage formatting.
      */
     @Test
-    public void testParseMiniMessage() {
+    void testParseMiniMessage() {
         // Test basic MiniMessage parsing
         String miniText = "<red>Red</red> <blue>Blue</blue>";
         Component component = ColorUtil.parseMiniMessage(miniText);
@@ -85,7 +85,7 @@ public class ColorUtilTest {
      * Test that serialiseMiniMessage correctly serializes a component to MiniMessage format.
      */
     @Test
-    public void testSerialiseMiniMessage() {
+    void testSerialiseMiniMessage() {
         // Create a component with formatting
         Component component = ColorUtil.parseMiniMessage("<red>Test</red>");
 
@@ -103,7 +103,7 @@ public class ColorUtilTest {
      * Test that prideTagToGradient correctly converts pride tags to gradients.
      */
     @Test
-    public void testPrideTagToGradient() {
+    void testPrideTagToGradient() {
         // Test with null input
         assertEquals("", ColorUtil.prideTagToGradient(null),
                 "Null input should return empty string");
@@ -125,7 +125,7 @@ public class ColorUtilTest {
      * Test that parseSafeMiniMessage correctly parses safe MiniMessage tags.
      */
     @Test
-    public void testParseSafeMiniMessage() {
+    void testParseSafeMiniMessage() {
         // Test with null input
         Component nullComponent = ColorUtil.parseSafeMiniMessage(null);
         assertEquals("", ColorUtil.componentToString(nullComponent),
@@ -142,7 +142,7 @@ public class ColorUtilTest {
      * Test the deprecated componentToStringWithPride method.
      */
     @Test
-    public void testComponentToStringWithPride() {
+    void testComponentToStringWithPride() {
         // Test with null component
         assertEquals("", ColorUtil.componentToStringWithPride(null),
                 "Null component should return empty string");

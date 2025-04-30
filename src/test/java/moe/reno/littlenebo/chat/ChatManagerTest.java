@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for the ChatManager class.
  */
-public class ChatManagerTest {
+class ChatManagerTest {
 
     @Mock
     private LittleNebo plugin;
@@ -85,7 +85,7 @@ public class ChatManagerTest {
      * Test that onChat correctly processes a chat event.
      */
     @Test
-    public void testOnChat() {
+    void testOnChat() {
         // Call the method to test
         chatManager.onChat(chatEvent);
 
@@ -106,7 +106,7 @@ public class ChatManagerTest {
      * Test that onPlayerQuit correctly handles a player quit event.
      */
     @Test
-    public void testOnPlayerQuit() {
+    void testOnPlayerQuit() {
         // Call the method to test
         chatManager.onPlayerQuit(quitEvent);
 
@@ -119,7 +119,7 @@ public class ChatManagerTest {
      * Test that formatMessage correctly formats a message with MiniMessage format.
      */
     @Test
-    public void testFormatMessageWithMiniMessage() {
+    void testFormatMessageWithMiniMessage() {
         // Set up the test
         when(configManager.isPlayerLegacyColorsEnabled()).thenReturn(true);
         when(formatConfig.hasLegacyFormatConf()).thenReturn(false);
@@ -137,7 +137,7 @@ public class ChatManagerTest {
      * Test that formatMessage correctly formats a message with legacy format.
      */
     @Test
-    public void testFormatMessageWithLegacyFormat() {
+    void testFormatMessageWithLegacyFormat() {
         // Set up the test
         when(configManager.isPlayerLegacyColorsEnabled()).thenReturn(true);
         when(formatConfig.hasLegacyFormatConf()).thenReturn(true);
@@ -156,7 +156,7 @@ public class ChatManagerTest {
      * Test that formatMessage correctly handles player legacy colors being disabled.
      */
     @Test
-    public void testFormatMessageWithLegacyColorsDisabled() {
+    void testFormatMessageWithLegacyColorsDisabled() {
         // Set up the test
         when(configManager.isPlayerLegacyColorsEnabled()).thenReturn(false);
 
@@ -174,7 +174,7 @@ public class ChatManagerTest {
      * Note: This test is limited since we can't easily mock static methods in PlaceholderAPI.
      */
     @Test
-    public void testFormatMessageWithPlaceholders() {
+    void testFormatMessageWithPlaceholders() {
         // This is a limited test since we can't easily mock the static PlaceholderAPI.setPlaceholders method
         // In a real environment, we would need to use a tool like PowerMock or Mockito's mockStatic
 

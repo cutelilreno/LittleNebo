@@ -6,13 +6,13 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests for the FormatConfig record.
  */
-public class FormatConfigTest {
+class FormatConfigTest {
 
     /**
      * Test that the FormatConfig constructor correctly sets all fields.
      */
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // Create a FormatConfig with all fields
         FormatConfig config = new FormatConfig(
                 "<gray>{display_name}</gray> <white>{message}</white>",
@@ -33,7 +33,7 @@ public class FormatConfigTest {
      * Test that hasLegacyFormatConf correctly identifies when legacy format is configured.
      */
     @Test
-    public void testHasLegacyFormatConf() {
+    void testHasLegacyFormatConf() {
         // Create a FormatConfig with legacy format
         FormatConfig configWithLegacy = new FormatConfig(
                 "<gray>{display_name}</gray> <white>{message}</white>",
@@ -72,7 +72,7 @@ public class FormatConfigTest {
      * Test that hasPermission correctly identifies when permission is configured.
      */
     @Test
-    public void testHasPermission() {
+    void testHasPermission() {
         // Create a FormatConfig with permission
         FormatConfig configWithPermission = new FormatConfig(
                 "<gray>{display_name}</gray> <white>{message}</white>",
@@ -111,7 +111,7 @@ public class FormatConfigTest {
      * Test that the record's equals and hashCode methods work correctly.
      */
     @Test
-    public void testEqualsAndHashCode() {
+    void testEqualsAndHashCode() {
         // Create two identical FormatConfigs
         FormatConfig config1 = new FormatConfig(
                 "<gray>{display_name}</gray> <white>{message}</white>",
