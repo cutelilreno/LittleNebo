@@ -49,6 +49,7 @@ public class ConfigManager {
                 ConfigurationSection formatSection = formatsSection.getConfigurationSection(key);
                 if (formatSection != null) {
                     String format = formatSection.getString("format", "");
+                    format.replace("\\n", "\n");
                     String legacyFormat = formatSection.getString("legacy-format", "");
                     String permission = formatSection.getString("permission", "");
 
@@ -64,7 +65,7 @@ public class ConfigManager {
 
         // Temp fix allows plugin to still work if syntax error in conf. Will need to rewrite loadConfig()
         if (defaultFormat == null) {
-            defaultFormat = new FormatConfig("<gray><{display_name}></gray> <white>{message}</white>", "", "true");
+            defaultFormat = new FormatConfig("<gray><white><{display_name}</white>></gray> <white>{message}</white>", "", "true");
             formats.put("default", defaultFormat);
         }
 

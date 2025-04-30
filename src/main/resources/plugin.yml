@@ -1,5 +1,5 @@
 name: LittleNebo
-version: 1.0.1
+version: "1.1.0"
 main: moe.reno.littlenebo.LittleNebo
 api-version: 1.19
 author: cutelilreno
@@ -15,4 +15,7 @@ commands:
 permissions:
   littlenebo.admin:
     description: Allows administration of Little Nebo
+    default: op
+  littlenebo.reload:
+    description: Allows reloading Little Nebo conf
     default: op

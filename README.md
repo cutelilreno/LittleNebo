@@ -1,53 +1,56 @@
-# Little Nebo
-
+# ✨ Little Nebo
 [![Java CI with Maven](https://github.com/cutelilreno/LittleNebo/actions/workflows/maven.yml/badge.svg)](https://github.com/cutelilreno/LittleNebo/actions/workflows/maven.yml)
 
-A lightweight chat plugin for Paper servers, inspired by Nebo, the god of communication and wisdom. Little Nebo aims to make chat formatting simple and flexible, using MiniMessage and PlaceholderAPI, while keeping things as safe and efficient as possible.
+A lightweight, lovingly-built chat plugin for Paper servers - inspired by **Nebo**, the God of wisdom and communication.  
+**Little Nebo** keeps your chat customisable and safe, with graceful support for MiniMessage, PlaceholderAPI, and legacy color codes.
 
-Created to be a functional and configurable chat plugin, but as lean as possible. Designed for papermc 1.21+.
+Designed with 1.21 in mind, but backported to run cleanly on **1.19.1+**. 🧵
 
 ---
+## 🌷 Features
 
-## 🌟 Features
+- 💬 **MiniMessage formatting** — create flexible chat layouts with color, hover text, gradients, and more.
+- 🧩 **PlaceholderAPI integration** — support for any registered placeholder (e.g. `%player_name%`, `%luckperms_prefix%`).
+- 🎨 **Legacy color code support** — allows player messages to use `&`-style Minecraft color codes (toggleable).
+- 🌈 **Pride tag support (1.19.1+)** — includes backported `<pride:...>` tags for servers before 1.21.
+- 🔐 **Safe input parsing** — filters out dangerous tags like `<click>` or `<hover>` in player messages.
+- 🛠 **Simple admin tools** — reload config, toggle debug, or test formats live in-game.
 
-- **Custom MiniMessage formats**: Define your own chat layouts with colors, gradients, and text decorations.
-- **PlaceholderAPI support**: Use any PlaceholderAPI placeholder in configuration.
-- **Optional legacy codes**: Enable `&`-style color codes in player messages if you prefer.
-- **Safe parsing**: Player input is sanitized to prevent interactive tags (click, hover, etc.).
-- **Easy** `/littlenebo` **commands**: Toggle debug, and preview formats in-game and reload.
 ---
+## 📸 Pride Tags!
 
+Little Nebo includes support for MiniMessage `<pride:...>` tags even if your server doesn't natively support them.
+
+![Pride chat demo](https://raw.githubusercontent.com/cutelilreno/LittleNebo/main/.github/assets/pride-demo.png)
+
+---
 ## 📥 Installation
 
-1. Build or download `LittleNebo.jar`.
-2. Place it into your server’s `/plugins/` folder.
-3. Install PlaceholderAPI (optional)
-4. Start or restart the server.
-5. Edit `plugins/LittleNebo/config.yml` to adjust formats and settings.
+1. Drop `LittleNebo.jar` into your `/plugins/` folder.
+2. *(Optional)* Add PlaceholderAPI for extended placeholder support.
+3. Start your server once to generate the config.
+4. Open `/plugins/LittleNebo/config.yml` to start customizing!
 
 ---
+## 🧭 Commands
 
-## 📖 Usage
-
-### Commands
-
-| Command                        | Permission         | Description                                     |
-| ------------------------------ | ------------------ | ----------------------------------------------- |
-| `/littlenebo reload`           | `littlenebo.admin` | Reloads the plugin configuration.               |
-| `/littlenebo debug`            | `littlenebo.admin` | Toggles debug logging.                          |
-| `/littlenebo debug config`     | `littlenebo.admin` | Shows current config values in chat.            |
-| `/littlenebo debug test <msg>` | `littlenebo.admin` | Previews how `<msg>` will be formatted.         |
-
-### Permissions
-
-- `littlenebo.admin` — manage plugin (reload, debug)
-- `littlenebo.format.*` — use custom formats (admin, staff, vip, donator, etc.)
+| Command                        | Permission         | Description                             |
+|-------------------------------|---------------------|-----------------------------------------|
+| `/littlenebo reload`          | `littlenebo.reload` | Reloads the plugin config.              |
+| `/littlenebo debug`           | `littlenebo.admin`  | Toggles debug mode on/off.              |
+| `/littlenebo debug config`    | `littlenebo.admin`  | Shows current configuration values.     |
+| `/littlenebo debug test <msg>`| `littlenebo.admin`  | Previews how `<msg>` will be formatted. |
 
 ---
+## 🎀 Permissions
 
-## ⚙️ Configuration (`config.yml`)
+- `littlenebo.admin` - manage the plugin and test formats  
+- `littlenebo.format.*` - use named chat formats like `admin`, `donator`, etc.
 
-A sample snippet for a format:
+---
+## 🧾 Configuration Example
+
+Here's a simple default format using MiniMessage:
 
 ```yaml
 formats:
@@ -55,22 +58,22 @@ formats:
     format: "<gray>[<green>Chat</green>]</gray> <white>{display_name}</white><gray>: </gray><white>{message}</white>"
 ```
 
-- **formats**: Define named formats with `format` (MiniMessage) or `legacy-format` (`&` codes).
-- **settings.parse-player-colors**: `true` to allow `&` codes in messages.
-
-For more details, see comments in the default `config.yml`.
-
 ---
+## Notes:
+
+- `{display_name}` and `{message}` are automatically replaced by the plugin.
+- You can include `%player_name%` or any PlaceholderAPI placeholder, if installed.
+- Set `settings.parse-player-colors` to `true` to allow `&` codes in player messages.
+
+More examples and explanations are available in the generated config.yml.
 
 ## 🛠 Development & Contribution
 
-This plugin is still a work in progress, and I’d appreciate any feedback or fixes:
-
-- Feel free to open an issue if something isn’t working as expected.
-- Pull requests are welcome for enhancements or bug fixes.
-- Please test changes carefully before using on production servers.
-
-Thanks for trying Little Nebo! 😊
+This project is still growing! If you'd like to help:
+- Open an issue if something's broken or confusing 🧵
+- Pull requests welcome for bug fixes or improvements 🤝
+- Test changes carefully before using them on production servers 🧪
+Thank you for helping Little Nebo grow. 💛
 
 ---
 ## 📚 Documentation
@@ -80,9 +83,8 @@ Thanks for trying Little Nebo! 😊
 ---
 ## 📜 License
 
-MIT License — see `LICENSE` for details.
+MIT License - use it, remix it, improve it. Just be kind. 
 
 ---
 
-*I’m learning as I go, so there may be things I’ve overlooked. Thanks for your patience and help!*
-
+This plugin was made with care and curiosity - thank you for your patience while I learn. 🫶

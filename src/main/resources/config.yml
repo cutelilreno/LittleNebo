@@ -1,47 +1,72 @@
 # Little Nebo Configuration
+# This file controls how your chat looks and behaves. Feel free to customise it to suit your server's vibe!
 
-# Debug mode - set to true to see debug messages in console
-# You can also set it using /nebo debug
+# Toggle debug mode. Set to true to see helpful messages in console for testing or troubleshooting.
+# You can also use the /nebo debug command in-game to toggle this.
 debug: false
 
-# Chat format options
-# Available placeholders:
-# - %player_name% - Player's name
-# - %player_displayname% - Player's display name
-# - All PlaceholderAPI placeholders
+# ✨ Chat format templates
+# These define how messages appear in chat. You can use MiniMessage tags and PlaceholderAPI placeholders.
 #
-# MiniMessage formatting is supported: https://docs.adventure.kyori.net/minimessage/format.html
-# Legacy color codes with & are also supported
+# Available built-in placeholders:
+# - {display_name} - The player’s display name
+# - {message} - The message the player sent
+# - All PlaceholderAPI placeholders are supported too! (if you installed it)
+#
+# Format tags:
+# - Use <MiniMessage> formatting: https://docs.adventure.kyori.net/minimessage/format.html
+# - Legacy Minecraft color codes (like &a) are also supported if enabled
 
 formats:
-  # MiniMessage example, using Player and Server Placeholders
-  # default:
-  #  format: |
-  #    <gray>[<green>Chat</green>]</gray><hover:show_text:'Ping: <gold>%player_ping%ms</gold>
-  #    Health: <red>%player_health%❤</red>
-  #    Level: <yellow>%player_level%</yellow>
-  #    Online: <green>%server_online%/%server_max_players%</green>'> <gray><<white>{display_name}</white>></gray></hover> <white>{message}</white>
+  # Here's a fancy example with hover text and player stats using PlaceholderAPI:
+  #
+  #default:
+  #  format: >-
+  #    <hover:show_text:'
+  #    <gold>%player_name% stats:
+  #      <gray>  ----------
+  #      <gray> Health: <white>%player_health% ❤
+  #      <gray> Hunger: <white>%player_food_level%
+  #      <gray> Level: <white>%player_level%
+  #      <gray> World: <white>%player_world_type%
+  #    '>
+  #    <gray><<white>{display_name}</white>></gray></hover>
+  #    <white>{message}</white>
 
-  # Default format for all players
+  # The default chat format used for players without a special permission format
   default:
-    format: <gray><</gray><white>{display_name}</white><gray>></gray> <white>{message}</white>
+    format: "<gray><</gray><white>{display_name}</white><gray>></gray> <white>{message}</white>"
 
-  # If you want to use legacy format instead, uncomment and modify the line below (untested)
-  # legacy-format: "&7[&aChat&7] &f{display_name}&7: &f{message}"
-
-  # Additional formats based on permissions
-  # Players with permission littlenebo.format.admin will use this format
-  admin:
-    permission: littlenebo.format.admin
-    format: <gray>[<red>Admin</red>]</gray> <gray><</gray><white>{display_name}</white><gray>></gray>
-      <white>{message}</white>
-
-  # Staff format - requires littlenebo.format.staff permission
+  # 🎖 Permission-based formats
+  # You can create different formats for players with specific permissions.
+  # The plugin will check these from top to bottom and stop at the first match.
+  # (So put your most exclusive formats first!)
+  #
+  # Tip: OPs will always match the first permission-based format.
+  #
+  # These formats are great for small tweaks - like adding a [D] for donors or [S] for staff.
+  #
+  # This could become hard to manage for major rank systems.
+  # If you use a rank system, it's better to include the rank with a luckperm placeholder:
+  # Luckperms example (this needs PlaceholderAPI and the luckperms placeholder installed):
+  #   format: "%luckperms_prefix% <gray><</gray><white>{display_name}</white><gray>></gray> <white>{message}</white>"
+  #
+  # Some examples:
   #staff:
   #  permission: littlenebo.format.staff
-  #  format: <gray>[<blue>Staff</blue>]</gray> <gray><</gray><white>{display_name}</white><gray>></gray> <white>{message}</white>
+  #  format: "<gray>[<dark_red>S</dark_red>]</gray> %luckperms_prefix% <gray><</gray><white>{display_name}</white><gray>></gray> <white>{message}</white>"
+  #donator:
+  #  permission: littlenebo.format.donator
+  #  format: "<gray>[<aqua>D</aqua>]</gray> %luckperms_prefix% <gray><</gray><white>{display_name}</white><gray>></gray> <white>{message}</white>"
 
-# Advanced settings
+  # Format used for players with the admin permission
+  admin:
+    permission: littlenebo.format.admin
+    format: "<gray>[<red>Admin</red>]</gray> <gray><</gray><white>{display_name}</white><gray>></gray> <white>{message}</white>"
+
+# ⚙️ Advanced settings
 settings:
-  # Should legacy color codes be parsed in player messages?
+  # Enable this if you want players to use legacy color codes like &a in their messages.
+  # This can be useful for more relaxed, creative servers - or disabled if you want tighter formatting control.
+  # Note: this will not toggle MiniMessage in chat
   parse-player-colors: true

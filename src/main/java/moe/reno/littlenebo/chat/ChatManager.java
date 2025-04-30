@@ -38,17 +38,16 @@ public class ChatManager implements Listener {
         // Safely check if PlaceholderAPI is enabled
         boolean placeholdersAvailable = false;
         try {
-            if (getServer() != null && getServer().getPluginManager() != null) {
+            if (getServer() != null && getServer().getPluginManager() != null) { // always true in production, but not in tests
                 placeholdersAvailable = getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
             }
         } catch (Exception e) {
-            // In test environments, this might throw an exception
             plugin.getLogger().warning("Error checking for PlaceholderAPI: " + e.getMessage());
         }
         this.placeholdersEnabled = placeholdersAvailable;
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
 
