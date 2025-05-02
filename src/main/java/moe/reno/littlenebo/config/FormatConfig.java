@@ -6,12 +6,19 @@ package moe.reno.littlenebo.config;
 public record FormatConfig (String format, String legacyFormat, String groupPermission) {
 
     /**
-     * Checks if legacy format is configured for chat.
-     *
-     * @return true if legacy codes are enabled
+     * Creates a validated FormatConfig with fallback to default if invalid.
      */
-    public boolean hasLegacyFormatConf() {
-        return legacyFormat != null && !legacyFormat.isEmpty();
+    public static FormatConfig createValidated(
+            String format, 
+            String legacyFormat, 
+            String groupPermission) {
+            
+        // Do not check for {display_name} in case they use PlaceholderAPI
+        if (format == null || !format.contains("{message}")) {
+            return new FormatConfig(format, legacyFormat, groupPermission);
+        }
+        legacyFormat = ""; // remove as it is deprecated
+        return new FormatConfig(format, legacyFormat, groupPermission);
     }
 
     /**

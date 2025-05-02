@@ -7,7 +7,6 @@ import moe.reno.littlenebo.util.ColorUtil;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -98,11 +97,9 @@ public class ChatManager implements Listener {
                 ? ColorUtil.parseMixedFormattingComponent(message)
                 : ColorUtil.parseSafeMiniMessage(message);
 
-        String formatTemplate = format.hasLegacyFormatConf()
-                ? format.legacyFormat()
-                : format.format();
+        String formatTemplate = format.format();
 
-        if(placeholdersEnabled) {
+        if(placeholdersEnabled && player != null) {
             formatTemplate = PlaceholderAPI.setPlaceholders(player, formatTemplate);
         }
 

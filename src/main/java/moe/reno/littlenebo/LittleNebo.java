@@ -55,7 +55,6 @@ public class LittleNebo extends JavaPlugin {
      *
      * @param message the debug text to log
      */
-    // TODO: Relocate to a more sensible area in code
     public void debug(String message) {
         if (getConfig().getBoolean("debug", false)) {
             getLogger().info("[DEBUG] " + message);
