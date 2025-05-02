@@ -1,3 +1,26 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2025 cutelilreno
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package moe.reno.littlenebo.chat;
 
 import moe.reno.littlenebo.LittleNebo;
@@ -8,8 +31,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A custom chat renderer for Paper that delegates chat formatting to the plugin's ChatManager.
@@ -20,7 +45,8 @@ import java.util.UUID;
  */
 public class NeboChatRenderer implements ChatRenderer {
     private final LittleNebo plugin;
-    private final Map<UUID, String> lastMessages = new HashMap<>();
+    private final Map<UUID, String> lastMessages = new ConcurrentHashMap<>();
+    private static final int MAX_CACHE_SIZE = 1000;
 
     /**
      * Constructs a new NeboChatRenderer bound to the main plugin instance.
@@ -70,7 +96,13 @@ public class NeboChatRenderer implements ChatRenderer {
      * @param message the raw plain-text message without formatting applied
      */
     public void setLastMessage(Player player, String message) {
-        lastMessages.put(player.getUniqueId(), message);
+        if (lastMessages.size() > MAX_CACHE_SIZE) {
+            Iterator<Map.Entry<UUID, String>> it = lastMessages.entrySet().iterator();
+            for (int i = 0; i < 100 && it.hasNext(); i++) {
+                it.next();
+                it.remove();
+            }
+        }
     }
     public void removeLastMessage(Player player) {
         lastMessages.remove(player.getUniqueId());
