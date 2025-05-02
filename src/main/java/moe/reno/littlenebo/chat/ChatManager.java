@@ -91,7 +91,7 @@ public class ChatManager implements Listener {
     public Component formatMessage(Player player, String message) {
         FormatConfig format = configManager.getFormatForPlayer(player);
 
-        final String displayName = player.getDisplayName();
+        final String displayName = ColorUtil.componentToString(player.displayName());
 
         final Component processedMessage = configManager.isPlayerLegacyColorsEnabled()
                 ? ColorUtil.parseMixedFormattingComponent(message)

@@ -57,7 +57,7 @@ public class LittleNebo extends JavaPlugin {
      */
     // TODO: Relocate to a more sensible area in code
     public void debug(String message) {
-        if (getConfig().getBoolean("debug", false)) { // forgot why there's a check TODO: investigate if necessary
+        if (getConfig().getBoolean("debug", false)) {
             getLogger().info("[DEBUG] " + message);
         }
     }

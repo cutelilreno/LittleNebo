@@ -51,7 +51,7 @@ public class LittleNeboCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendPluginInfo(CommandSender sender, String label) {
-        sender.sendMessage(Messages.title("Little Nebo v" + plugin.getDescription().getVersion()));
+        sender.sendMessage(Messages.title("Little Nebo v" + plugin.getPluginMeta().getVersion()));
         sender.sendMessage(Messages.info("Usage: /" + label + " <reload | debug>"));
     }
 
