@@ -89,10 +89,11 @@ public class ChatManager implements Listener {
      * @return a formatted {@link Component}
      */
     public Component formatMessage(Player player, String message) {
+        final String displayName = player != null ? 
+            ColorUtil.componentToString(player.displayName()) : "Console";
+       
         FormatConfig format = configManager.getFormatForPlayer(player);
-
-        final String displayName = ColorUtil.componentToString(player.displayName());
-
+        
         final Component processedMessage = configManager.isPlayerLegacyColorsEnabled()
                 ? ColorUtil.parseMixedFormattingComponent(message)
                 : ColorUtil.parseSafeMiniMessage(message);
@@ -105,22 +106,14 @@ public class ChatManager implements Listener {
             formatTemplate = PlaceholderAPI.setPlaceholders(player, formatTemplate);
         }
 
-        if (format.hasLegacyFormatConf()) {
-            String legacyFormatted = formatTemplate
-                    .replace("{display_name}", displayName)
-                    .replace("{message}", PlainTextComponentSerializer.plainText().serialize(processedMessage));
+        Component baseFormat = ColorUtil.parseMiniMessage(formatTemplate);
 
-            return ColorUtil.legacyToComponent(legacyFormatted);
-        } else {
-            Component baseFormat = ColorUtil.parseMiniMessage(formatTemplate);
-
-            return baseFormat
-                    .replaceText(builder -> builder
-                            .matchLiteral("{display_name}")
-                            .replacement(Component.text(displayName)))
-                    .replaceText(builder -> builder
-                            .matchLiteral("{message}")
-                            .replacement(processedMessage));
+        return baseFormat
+                .replaceText(builder -> builder
+                        .matchLiteral("{display_name}")
+                        .replacement(Component.text(displayName)))
+                .replaceText(builder -> builder
+                        .matchLiteral("{message}")
+                        .replacement(processedMessage));
         }
-    }
 }

@@ -87,13 +87,6 @@ public class ConfigManager {
             }
         }
     
-        // Ensure a default format exists
-        if (defaultFormat == null) {
-            plugin.getLogger().warning("No default format found in config. Creating default format.");
-            setupDefaultFormat();
-        }
-    
-        
         // Add this check to create a default format if none was found
         if (defaultFormat == null) {
             plugin.getLogger().warning("No default format found in config. Creating default format.");
