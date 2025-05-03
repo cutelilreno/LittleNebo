@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NeboChatRenderer implements ChatRenderer {
     private final LittleNebo plugin;
     private final Map<UUID, String> lastMessages = new ConcurrentHashMap<>();
-    private static final int MAX_CACHE_SIZE = 1000;
+    private static final int MAX_CACHE_SIZE = 500;
 
     /**
      * Constructs a new NeboChatRenderer bound to the main plugin instance.
@@ -76,6 +76,10 @@ public class NeboChatRenderer implements ChatRenderer {
      * @param message the raw plain-text message without formatting applied
      */
     public void setLastMessage(Player player, String message) {
+        // Add the new message to the map
+        lastMessages.put(player.getUniqueId(), message);
+        
+        // Clean up if the cache gets too large
         if (lastMessages.size() > MAX_CACHE_SIZE) {
             Iterator<Map.Entry<UUID, String>> it = lastMessages.entrySet().iterator();
             for (int i = 0; i < 100 && it.hasNext(); i++) {
