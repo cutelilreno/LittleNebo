@@ -7,8 +7,15 @@ package moe.reno.littlenebo.config;
 
 import moe.reno.littlenebo.LittleNebo;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,30 +39,65 @@ public class ConfigManager {
      * </p>
      */
     public void loadConfig() {
-
-        formats.clear();
+    formats.clear();
+    try {
+        // Don't use plugin.reloadConfig() which will throw exceptions before we can catch them
+        plugin.saveDefaultConfig();
+        
+        // Load the config file manually so we can catch YAML errors
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
+        FileConfiguration config = new YamlConfiguration();
+        
         try {
-            plugin.saveDefaultConfig();
-            plugin.reloadConfig();
-        
-            FileConfiguration config = plugin.getConfig();
-        
-            debug = config.getBoolean("debug", false);
-        
-            ConfigurationSection settings = config.getConfigurationSection("settings");
-            legacyPlayerColors = settings != null && settings.getBoolean("parse-player-colors", true);
-        
-            loadChatFormats(config);
-        
-            plugin.getLogger().info("Loaded " + formats.size() + " chat formats");
-        } catch (Exception e) {
-            plugin.getLogger().severe("Failed to load configuration: " + e.getMessage());
-            plugin.getLogger().warning("Please check your config.yml for errors");
-            setupDefaultFormat();
+            config.load(configFile);
+            // Set the config in the plugin
+            Field configField = JavaPlugin.class.getDeclaredField("newConfig");
+            configField.setAccessible(true);
+            configField.set(plugin, config);
+        } catch (IOException | InvalidConfigurationException e) {
+            // This catches YAML syntax errors specifically
+            handleConfigError("YAML syntax error - check indentation and formatting", e);
+            return; // Important: stop processing here
         }
-
         
-
+        // Continue with normal config processing
+        debug = config.getBoolean("debug", false);
+        
+        ConfigurationSection settings = config.getConfigurationSection("settings");
+        legacyPlayerColors = settings != null && settings.getBoolean("parse-player-colors", true);
+        
+        loadChatFormats(config);
+        
+        plugin.getLogger().info("Loaded " + formats.size() + " chat formats");
+    } catch (Exception e) {
+        handleConfigError("unexpected error", e);
+    }
+}
+    
+    /**
+     * Handles configuration errors in a consistent way
+     * @param errorType description of the error type
+     * @param e the exception that occurred
+     */
+    private void handleConfigError(String errorType, Exception e) {
+        String message = e.getMessage();
+        if (message != null && message.contains("\n")) {
+            // For multi-line error messages, just take the first line
+            message = message.substring(0, message.indexOf('\n'));
+        }
+        
+        plugin.getLogger().severe("╔══ Nebo: Configuration Error ═══════════════════════");
+        plugin.getLogger().severe("║ Failed to load config due to " + errorType);
+        plugin.getLogger().severe("║ Error: " + message);
+        
+        if (errorType.contains("YAML")) {
+            plugin.getLogger().severe("║ Fix: Check your config.yml indentation and syntax");
+        }
+        
+        plugin.getLogger().severe("╠══ Using Default Settings ══════════════════");
+        plugin.getLogger().severe("╚════════════════════════════════════════════");
+        
+        setupDefaultFormat();
     }
     /**
     * Loads chat formats from configuration
