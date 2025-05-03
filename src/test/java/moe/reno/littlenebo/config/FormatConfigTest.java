@@ -29,10 +29,10 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for the FormatConfig class
  */
-public class FormatConfigTest {
+class FormatConfigTest {
 
     @Test
-    public void createValidated_validFormat_returnsUnchanged() {
+    void createValidated_validFormat_returnsUnchanged() {
         String format = "{display_name}: {message}";
         FormatConfig config = FormatConfig.createValidated(format, "", "permission.test");
         
@@ -42,7 +42,7 @@ public class FormatConfigTest {
     }
     
     @Test
-    public void createValidated_missingMessagePlaceholder_returnsDefaultFormat() {
+    void createValidated_missingMessagePlaceholder_returnsDefaultFormat() {
         // Format without {message} placeholder should be replaced with default
         String invalidFormat = "This format has no message placeholder";
         FormatConfig config = FormatConfig.createValidated(invalidFormat, "", "permission.test");
@@ -53,7 +53,7 @@ public class FormatConfigTest {
     }
     
     @Test
-    public void createValidated_nullFormat_returnsDefaultFormat() {
+    void createValidated_nullFormat_returnsDefaultFormat() {
         FormatConfig config = FormatConfig.createValidated(null, "", "permission.test");
         
         assertEquals("{display_name}: {message}", config.format());
@@ -62,19 +62,19 @@ public class FormatConfigTest {
     }
     
     @Test
-    public void hasPermission_withGroupPermission_returnsTrue() {
+    void hasPermission_withGroupPermission_returnsTrue() {
         FormatConfig config = new FormatConfig("format", "", "permission.test");
         assertTrue(config.hasPermission());
     }
     
     @Test
-    public void hasPermission_withEmptyGroupPermission_returnsFalse() {
+    void hasPermission_withEmptyGroupPermission_returnsFalse() {
         FormatConfig config = new FormatConfig("format", "", "");
         assertFalse(config.hasPermission());
     }
     
     @Test
-    public void hasPermission_withNullGroupPermission_returnsFalse() {
+    void hasPermission_withNullGroupPermission_returnsFalse() {
         FormatConfig config = new FormatConfig("format", "", null);
         assertFalse(config.hasPermission());
     }

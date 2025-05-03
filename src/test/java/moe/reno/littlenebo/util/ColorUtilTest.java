@@ -30,21 +30,21 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for the ColorUtil class
  */
-public class ColorUtilTest {
+class ColorUtilTest {
 
     @Test
-    public void componentToString_nullComponent_returnsEmptyString() {
+    void componentToString_nullComponent_returnsEmptyString() {
         assertEquals("", ColorUtil.componentToString(null));
     }
 
     @Test
-    public void componentToString_simpleComponent_returnsTextContent() {
+    void componentToString_simpleComponent_returnsTextContent() {
         Component component = Component.text("Hello World");
         assertEquals("Hello World", ColorUtil.componentToString(component));
     }
 
     @Test
-    public void legacyToComponent_withLegacyCodes_convertsCorrectly() {
+    void legacyToComponent_withLegacyCodes_convertsCorrectly() {
         Component component = ColorUtil.legacyToComponent("&cRed &bBlue");
         // Testing content instead of exact format, as the serialization might vary
         String content = ColorUtil.componentToString(component);
@@ -52,26 +52,26 @@ public class ColorUtilTest {
     }
 
     @Test
-    public void parseMiniMessage_null_returnsEmptyComponent() {
+    void parseMiniMessage_null_returnsEmptyComponent() {
         Component component = ColorUtil.parseMiniMessage(null);
         assertEquals("", ColorUtil.componentToString(component));
     }
 
     @Test
-    public void parseMiniMessage_withTags_parsesCorrectly() {
+    void parseMiniMessage_withTags_parsesCorrectly() {
         Component component = ColorUtil.parseMiniMessage("<red>Red Text</red>");
         assertEquals("Red Text", ColorUtil.componentToString(component));
     }
 
     @Test
-    public void parseMixedFormattingComponent_withMixed_parsesCorrectly() {
+    void parseMixedFormattingComponent_withMixed_parsesCorrectly() {
         Component component = ColorUtil.parseMixedFormattingComponent("&cRed <blue>Blue</blue>");
         String content = ColorUtil.componentToString(component);
         assertEquals("Red Blue", content);
     }
 
     @Test
-    public void prideTagToGradient_withPrideTags_convertsCorrectly() {
+    void prideTagToGradient_withPrideTags_convertsCorrectly() {
         String input = "<pride:trans>Trans Pride</pride:trans>";
         String converted = ColorUtil.prideTagToGradient(input);
         
@@ -81,14 +81,14 @@ public class ColorUtilTest {
     }
 
     @Test
-    public void prideTagToGradient_withDefaultPride_convertsCorrectly() {
+    void prideTagToGradient_withDefaultPride_convertsCorrectly() {
         String input = "<pride>Rainbow Pride</pride>";
         String converted = ColorUtil.prideTagToGradient(input);
         assertTrue(converted.contains("<gradient:#e50000:#ff8d00:#ffee00:#028121:#004cff:#770088>Rainbow Pride</gradient>"));
     }
 
     @Test
-    public void parseSafeMiniMessage_withColorTags_parsesCorrectly() {
+    void parseSafeMiniMessage_withColorTags_parsesCorrectly() {
         Component component = ColorUtil.parseSafeMiniMessage("<red>Safe Red</red>");
         assertEquals("Safe Red", ColorUtil.componentToString(component));
     }

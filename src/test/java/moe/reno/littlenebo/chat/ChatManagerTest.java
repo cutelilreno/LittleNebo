@@ -47,7 +47,7 @@ import static org.mockito.Mockito.*;
 /**
  * Tests for the ChatManager class using MockBukkit
  */
-public class ChatManagerTest {
+class ChatManagerTest {
     private ServerMock server;
     private LittleNebo plugin;
     private ConfigManager configManager;
@@ -103,7 +103,7 @@ public class ChatManagerTest {
     }
 
     @Test
-    public void formatMessage_withBasicMessage_formatsCorrectly() {
+    void formatMessage_withBasicMessage_formatsCorrectly() {
         // Test basic message formatting
         Component result = chatManager.formatMessage(player, "Hello world!");
         
@@ -112,7 +112,7 @@ public class ChatManagerTest {
     }
     
     @Test
-    public void formatMessage_withLegacyColors_parsesCorrectly() {
+    void formatMessage_withLegacyColors_parsesCorrectly() {
         // Test message with legacy color codes
         Component result = chatManager.formatMessage(player, "&cColored &bmessage");
         
@@ -122,7 +122,7 @@ public class ChatManagerTest {
     }
     
     @Test
-    public void formatMessage_withNullPlayer_usesConsoleAsDisplayName() {
+    void formatMessage_withNullPlayer_usesConsoleAsDisplayName() {
         // Test formatting with null player (represents console)
         Component result = chatManager.formatMessage(null, "Console message");
         
@@ -131,7 +131,7 @@ public class ChatManagerTest {
     }
 
     @Test
-    public void onChat_handlesAsyncChatEventCorrectly() {
+    void onChat_handlesAsyncChatEventCorrectly() {
         // Create a test message component
         Component messageComponent = Component.text("Test message");
         
@@ -158,7 +158,7 @@ public class ChatManagerTest {
     }
 
     @Test
-    public void chatRenderer_formatsMessageCorrectly() {
+    void chatRenderer_formatsMessageCorrectly() {
         // Store a test message in the renderer
         chatRenderer.setLastMessage(player, "Test renderer message");
         
@@ -170,7 +170,7 @@ public class ChatManagerTest {
     }
 
     @Test
-    public void formatMessage_withDifferentFormat_appliesFormatCorrectly() {
+    void formatMessage_withDifferentFormat_appliesFormatCorrectly() {
         // Change the format
         FormatConfig customFormat = new FormatConfig("<gold>[Player] {display_name}</gold> » <green>{message}</green>", "", "");
         when(configManager.getFormatForPlayer(player)).thenReturn(customFormat);
