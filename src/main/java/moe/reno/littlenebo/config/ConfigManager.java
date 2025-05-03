@@ -20,6 +20,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages plugin configuration loading, access, and validation.
+ */
 public class ConfigManager {
     private final LittleNebo plugin;
     private boolean debug = false; // Default to false
@@ -27,6 +30,9 @@ public class ConfigManager {
     private final Map<String, FormatConfig> formats = new HashMap<>();
     private FormatConfig defaultFormat;
 
+    /**
+     * @param plugin The plugin instance
+     */
     public ConfigManager(LittleNebo plugin) {
         this.plugin = plugin;
     }
@@ -69,10 +75,10 @@ public class ConfigManager {
         loadChatFormats(config);
         
         plugin.getLogger().info("Loaded " + formats.size() + " chat formats");
-    } catch (Exception e) {
-        handleConfigError("unexpected error", e);
+        } catch (Exception e) {
+            handleConfigError("unexpected error", e);
+        }
     }
-}
     
     /**
      * Handles configuration errors in a consistent way
@@ -99,6 +105,7 @@ public class ConfigManager {
         
         setupDefaultFormat();
     }
+
     /**
     * Loads chat formats from configuration
     */
@@ -140,6 +147,7 @@ public class ConfigManager {
             setupDefaultFormat();
         }
     }
+
     /**
      * Sets up a default format if none is found in the config.
      */
@@ -153,16 +161,28 @@ public class ConfigManager {
         plugin.getLogger().info("Default format set to: " + defaultFormat.format());
     }
 
+    /**
+     * gets debug status.
+     * @return debug boolean
+     */
     public boolean isDebugEnabled() {
         return debug;
     }
 
+    /**
+     * Toggles debug mode on or off.
+     * @return the new debug state
+     */
     public boolean toggleDebug() {
         debug = !debug;
         plugin.getLogger().info("Debug mode is now " + (debug ? "enabled" : "disabled"));
         return debug;
     }
 
+    /**
+     * Saves the configuration safely to prevent data loss.
+     * @return true if the config was saved successfully, false otherwise
+     */
     public boolean saveConfigSafely() {
         File configFile = new File(plugin.getDataFolder(), "config.yml");
         FileConfiguration config = plugin.getConfig();
@@ -193,10 +213,19 @@ public class ConfigManager {
         }
     }
 
+    /**
+      * I feel like this one explains itself. only puting it here
+      * to stop deepseek complaining about missing javadocs.
+      */
     public boolean isPlayerLegacyColorsEnabled() {
         return legacyPlayerColors;
     }
 
+    /**
+     * Gets format for a specific player.
+     * @param player the player
+     * @return the appropriate format
+     */
     public FormatConfig getFormatForPlayer(Player player) {
         for (Map.Entry<String, FormatConfig> entry : formats.entrySet()) {
             FormatConfig format = entry.getValue();

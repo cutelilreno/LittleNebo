@@ -56,7 +56,7 @@ class ChatManagerTest {
     private NeboChatRenderer chatRenderer;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // Start a mock server
         server = MockBukkit.mock();
         
@@ -97,7 +97,7 @@ class ChatManagerTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         // Stop the mock server
         MockBukkit.unmock();
     }
@@ -182,7 +182,7 @@ class ChatManagerTest {
     }
 
     @Test
-    public void formatMessage_withLegacyColorsDisabled_ignoresLegacyCodes() {
+    void formatMessage_withLegacyColorsDisabled_ignoresLegacyCodes() {
         // Disable legacy colors
         when(configManager.isPlayerLegacyColorsEnabled()).thenReturn(false);
         
@@ -194,7 +194,7 @@ class ChatManagerTest {
     }
 
     @Test
-    public void formatMessage_withNullMessage_handlesGracefully() {
+    void formatMessage_withNullMessage_handlesGracefully() {
         // Test null message handling
         Component result = chatManager.formatMessage(player, null);
         
@@ -205,7 +205,7 @@ class ChatManagerTest {
     }
 
     @Test
-    public void onPlayerQuit_removesLastMessage() {
+    void onPlayerQuit_removesLastMessage() {
         // First store a message
         chatRenderer.setLastMessage(player, "Test message");
         
@@ -230,7 +230,7 @@ class ChatManagerTest {
     }
 
     @Test
-    public void formatMessage_performance_isReasonable() {
+    void formatMessage_performance_isReasonable() {
         // Test performance with many messages
         long startTime = System.currentTimeMillis();
         
@@ -246,7 +246,7 @@ class ChatManagerTest {
 
     // Mock PlaceholderAPI instead of trying to access the real one
     @Test
-    public void formatMessage_withPlaceholderAPI_handlesPlaceholders() throws Exception {
+    void formatMessage_withPlaceholderAPI_handlesPlaceholders() throws Exception {
         // Instead of using PlaceholderAPI directly, we'll mock the behavior
         
         // Create a custom ChatManager with our own placeholdersEnabled flag

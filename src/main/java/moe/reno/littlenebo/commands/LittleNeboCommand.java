@@ -55,11 +55,25 @@ public class LittleNeboCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    /**
+     * Sends plugin information to the command sender.
+     * <p>
+     *     This includes the plugin version and usage instructions.
+     * </p>
+     *
+     * @param sender the command sender
+     * @param label  the command label (e.g., "littlenebo")
+     */
     private void sendPluginInfo(CommandSender sender, String label) {
         sender.sendMessage(Messages.title("Little Nebo v" + plugin.getPluginMeta().getVersion()));
         sender.sendMessage(Messages.info("Usage: /" + label + " <reload | debug>"));
     }
 
+    /**
+     * Handles the reload command.
+     * Cant believe im documenting private methods now. Thanks deepsource!
+     * @param sender the command sender
+     */
     private void handleReload(CommandSender sender) {
         try {
             plugin.getConfigManager().loadConfig();
@@ -70,6 +84,12 @@ public class LittleNeboCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    /**
+     * Handles the debug command and its subcommands.
+     *
+     * @param sender the command sender
+     * @param args   the command arguments
+     */
     private void handleDebugCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
             boolean debug = plugin.getConfigManager().toggleDebug();
@@ -108,6 +128,13 @@ public class LittleNeboCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    /**
+     * Sends an error message to the sender for an unknown subcommand.
+     *
+     * @param sender the command sender
+     * @param label  the command label (e.g., "littlenebo")
+     * @param subCommand the unknown subcommand
+     */
     private void sendUnknownSubcommand(CommandSender sender, String label, String subCommand) {
         sender.sendMessage(Messages.error("Unknown subcommand: " + subCommand));
         sender.sendMessage(Messages.info("Usage: /" + label + " <reload | debug>"));

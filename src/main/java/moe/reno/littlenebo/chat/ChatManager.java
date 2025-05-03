@@ -51,6 +51,15 @@ public class ChatManager implements Listener {
         this.placeholdersEnabled = placeholdersAvailable;
     }
 
+    /**
+     * Event handler for when a player sends a chat message.
+     * <p>
+     *     Sets the last message for the player in the chat renderer,
+     *     and applies the configured format to the message.
+     * </p>
+     *
+     * @param event the AsyncChatEvent
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
@@ -74,7 +83,12 @@ public class ChatManager implements Listener {
         }
     }
 
-
+    /**
+     * Event handler for when a player quits the server.
+     * Removes the last message from the chat renderer.
+     *
+     * @param event the PlayerQuitEvent
+     */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         // Honestly unless you have an insane influx of players joining and leaving,

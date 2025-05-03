@@ -88,6 +88,12 @@ public class NeboChatRenderer implements ChatRenderer {
             }
         }
     }
+
+    /**
+      * Removes the last message for a player from the cache.
+      * 
+      * @param player the player whose last message should be removed
+      */
     public void removeLastMessage(Player player) {
         lastMessages.remove(player.getUniqueId());
     }
