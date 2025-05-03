@@ -159,6 +159,8 @@ public class ConfigManager {
 
     public boolean toggleDebug() {
         debug = !debug;
+        // The debug state change is only applied in memory and not persisted to the config file
+        // to avoid saving potentially faulty configurations.
         plugin.getLogger().info("Debug mode is now " + (debug ? "enabled" : "disabled"));
         return debug;
     }
