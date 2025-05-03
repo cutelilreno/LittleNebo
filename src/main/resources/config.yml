@@ -1,10 +1,6 @@
 # Little Nebo Configuration
 # This file controls how your chat looks and behaves. Feel free to customise it to suit your server's vibe!
 
-# Toggle debug mode. Set to true to see helpful messages in console for testing or troubleshooting.
-# You can also use the /nebo debug command in-game to toggle this.
-debug: false
-
 # ✨ Chat format templates
 # These define how messages appear in chat. You can use MiniMessage tags and PlaceholderAPI placeholders.
 #

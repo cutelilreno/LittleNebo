@@ -109,7 +109,7 @@ public class LittleNebo extends JavaPlugin {
      * @param message the debug text to log
      */
     public void debug(String message) {
-        if (getConfig().getBoolean("debug", false)) {
+        if (configManager.isDebugEnabled()) {
             getLogger().info("[DEBUG] " + message);
         }
     }

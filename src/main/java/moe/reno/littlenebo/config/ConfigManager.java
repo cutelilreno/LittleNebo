@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class ConfigManager {
     private final LittleNebo plugin;
-    private boolean debug;
+    private boolean debug = false; // Default to false
     private boolean legacyPlayerColors;
     private final Map<String, FormatConfig> formats = new HashMap<>();
     private FormatConfig defaultFormat;
@@ -61,7 +61,7 @@ public class ConfigManager {
         }
         
         // Continue with normal config processing
-        debug = config.getBoolean("debug", false);
+        debug = config.getBoolean("debug", isDebugEnabled());
         
         ConfigurationSection settings = config.getConfigurationSection("settings");
         legacyPlayerColors = settings != null && settings.getBoolean("parse-player-colors", true);
