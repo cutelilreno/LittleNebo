@@ -1,3 +1,8 @@
+/**
+ * MIT License
+ * Copyright (c) 2025 cutelilreno
+ * https://opensource.org/licenses/MIT
+ */
 package moe.reno.littlenebo.commands;
 
 import moe.reno.littlenebo.LittleNebo;
@@ -51,7 +56,7 @@ public class LittleNeboCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendPluginInfo(CommandSender sender, String label) {
-        sender.sendMessage(Messages.title("Little Nebo v" + plugin.getDescription().getVersion()));
+        sender.sendMessage(Messages.title("Little Nebo v" + plugin.getPluginMeta().getVersion()));
         sender.sendMessage(Messages.info("Usage: /" + label + " <reload | debug>"));
     }
 
@@ -112,9 +117,15 @@ public class LittleNeboCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
             return subcommands.stream()
-                    .filter(s -> s.startsWith(args[0].toLowerCase()))
+                .filter(s -> s.startsWith(args[0].toLowerCase()))
+                .collect(Collectors.toList());
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("debug")) {
+                return Arrays.asList("config", "test").stream()
+                    .filter(s -> s.startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());
+            }
         }
-        return new ArrayList<>();
+    return new ArrayList<>();
     }
 }

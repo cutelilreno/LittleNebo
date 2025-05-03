@@ -1,3 +1,8 @@
+/**
+ * MIT License
+ * Copyright (c) 2025 cutelilreno
+ * https://opensource.org/licenses/MIT
+ */
 package moe.reno.littlenebo.chat;
 
 import moe.reno.littlenebo.LittleNebo;
@@ -7,7 +12,6 @@ import moe.reno.littlenebo.util.ColorUtil;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -89,38 +93,29 @@ public class ChatManager implements Listener {
      * @return a formatted {@link Component}
      */
     public Component formatMessage(Player player, String message) {
+        final String displayName = player != null ? 
+            ColorUtil.componentToString(player.displayName()) : "Console";
+       
         FormatConfig format = configManager.getFormatForPlayer(player);
-
-        final String displayName = player.getDisplayName();
-
+        
         final Component processedMessage = configManager.isPlayerLegacyColorsEnabled()
                 ? ColorUtil.parseMixedFormattingComponent(message)
                 : ColorUtil.parseSafeMiniMessage(message);
 
-        String formatTemplate = format.hasLegacyFormatConf()
-                ? format.legacyFormat()
-                : format.format();
+        String formatTemplate = format.format();
 
-        if(placeholdersEnabled) {
+        if(placeholdersEnabled && player != null) {
             formatTemplate = PlaceholderAPI.setPlaceholders(player, formatTemplate);
         }
 
-        if (format.hasLegacyFormatConf()) {
-            String legacyFormatted = formatTemplate
-                    .replace("{display_name}", displayName)
-                    .replace("{message}", PlainTextComponentSerializer.plainText().serialize(processedMessage));
+        Component baseFormat = ColorUtil.parseMiniMessage(formatTemplate);
 
-            return ColorUtil.legacyToComponent(legacyFormatted);
-        } else {
-            Component baseFormat = ColorUtil.parseMiniMessage(formatTemplate);
-
-            return baseFormat
-                    .replaceText(builder -> builder
-                            .matchLiteral("{display_name}")
-                            .replacement(Component.text(displayName)))
-                    .replaceText(builder -> builder
-                            .matchLiteral("{message}")
-                            .replacement(processedMessage));
+        return baseFormat
+                .replaceText(builder -> builder
+                        .matchLiteral("{display_name}")
+                        .replacement(Component.text(displayName)))
+                .replaceText(builder -> builder
+                        .matchLiteral("{message}")
+                        .replacement(processedMessage));
         }
-    }
 }

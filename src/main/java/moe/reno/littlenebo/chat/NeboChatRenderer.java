@@ -1,3 +1,8 @@
+/**
+ * MIT License
+ * Copyright (c) 2025 cutelilreno
+ * https://opensource.org/licenses/MIT
+ */
 package moe.reno.littlenebo.chat;
 
 import moe.reno.littlenebo.LittleNebo;
@@ -6,10 +11,10 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A custom chat renderer for Paper that delegates chat formatting to the plugin's ChatManager.
@@ -20,7 +25,8 @@ import java.util.UUID;
  */
 public class NeboChatRenderer implements ChatRenderer {
     private final LittleNebo plugin;
-    private final Map<UUID, String> lastMessages = new HashMap<>();
+    private final Map<UUID, String> lastMessages = new ConcurrentHashMap<>();
+    private static final int MAX_CACHE_SIZE = 500;
 
     /**
      * Constructs a new NeboChatRenderer bound to the main plugin instance.
@@ -70,7 +76,17 @@ public class NeboChatRenderer implements ChatRenderer {
      * @param message the raw plain-text message without formatting applied
      */
     public void setLastMessage(Player player, String message) {
+        // Add the new message to the map
         lastMessages.put(player.getUniqueId(), message);
+        
+        // Clean up if the cache gets too large
+        if (lastMessages.size() > MAX_CACHE_SIZE) {
+            Iterator<Map.Entry<UUID, String>> it = lastMessages.entrySet().iterator();
+            for (int i = 0; i < 100 && it.hasNext(); i++) {
+                it.next();
+                it.remove();
+            }
+        }
     }
     public void removeLastMessage(Player player) {
         lastMessages.remove(player.getUniqueId());
