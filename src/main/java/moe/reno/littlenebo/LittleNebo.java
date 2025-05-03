@@ -26,6 +26,8 @@ package moe.reno.littlenebo;
 import moe.reno.littlenebo.chat.ChatManager;
 import moe.reno.littlenebo.commands.LittleNeboCommand;
 import moe.reno.littlenebo.config.ConfigManager;
+
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -43,6 +45,34 @@ public class LittleNebo extends JavaPlugin {
         configManager = new ConfigManager(this);
         configManager.loadConfig();
         chatManager = new ChatManager(this, configManager);
+        String version = Bukkit.getBukkitVersion();
+        if (version.startsWith("1.19.0") || !version.matches("^(1\\.(19|2\\d|[3-9]\\d)|([2-9]\\d+)\\.\\d+).*")) {
+            getLogger().severe("╔══ Version Error ═══════════════════════");
+            getLogger().severe("║ LittleNebo requires Paper 1.19.1 or higher!");
+            getLogger().severe("║ Detected version: " + version);
+            getLogger().severe("║ Plugin will not be enabled.");
+            getLogger().severe("╚════════════════════════════════════════");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        if (!version.matches("^1\\.(19|20|21)(\\.|$).*")) {
+            getLogger().warning("╔══ Version Warning ══════════════════════");
+            getLogger().warning("║ LittleNebo is running on an untested Minecraft version!");
+            getLogger().warning("║ Detected version: " + version);
+            getLogger().warning("║ The plugin may not work correctly.");
+            getLogger().warning("╚════════════════════════════════════════");
+        }
+        try {
+            Class.forName("io.papermc.paper.event.player.AsyncChatEvent");
+        } catch (ClassNotFoundException e) {
+            getLogger().severe("╔══ Server Error ════════════════════════");
+            getLogger().severe("║ LittleNebo requires Paper!");
+            getLogger().severe("║ This plugin won't work on Spigot or Bukkit.");
+            getLogger().severe("║ Please use Paper: https://papermc.io/");
+            getLogger().severe("╚════════════════════════════════════════");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         getServer().getPluginManager().registerEvents(chatManager, this);
 
         getCommand("littlenebo").setExecutor(new LittleNeboCommand(this));
