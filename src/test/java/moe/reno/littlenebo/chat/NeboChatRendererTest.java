@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for NeboChatRenderer class using MockBukkit
  */
-public class NeboChatRendererTest {
+class NeboChatRendererTest {
     private ServerMock server;
     private LittleNebo plugin;
     private ChatManager chatManager;
@@ -78,7 +78,7 @@ public class NeboChatRendererTest {
     }
 
     @Test
-    public void render_withStoredMessage_usesFormattedMessage() {
+    void render_withStoredMessage_usesFormattedMessage() {
         // Setup: Store a message for the player
         String testMessage = "Hello, world!";
         chatRenderer.setLastMessage(sourcePlayer, testMessage);
@@ -103,7 +103,7 @@ public class NeboChatRendererTest {
     }
     
     @Test
-    public void render_withNoStoredMessage_usesEmptyString() {
+    void render_withNoStoredMessage_usesEmptyString() {
         // Setup: Don't store any message (to test default behavior)
         
         // Setup: Configure chat manager to return a specific component for empty string
@@ -126,7 +126,7 @@ public class NeboChatRendererTest {
     }
     
     @Test
-    public void removeLastMessage_afterSetting_removesMessage() {
+    void removeLastMessage_afterSetting_removesMessage() {
         // Setup: Store a message for the player
         String testMessage = "Test message";
         chatRenderer.setLastMessage(sourcePlayer, testMessage);

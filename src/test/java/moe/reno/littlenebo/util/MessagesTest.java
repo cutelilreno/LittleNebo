@@ -31,31 +31,31 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for the Messages utility class
  */
-public class MessagesTest {
+class MessagesTest {
 
     @Test
-    public void error_withMessage_returnsRedComponent() {
+    void error_withMessage_returnsRedComponent() {
         Component component = Messages.error("Error message");
         assertEquals("Error message", ColorUtil.componentToString(component));
         assertEquals(NamedTextColor.RED, component.color());
     }
 
     @Test
-    public void success_withMessage_returnsGreenComponent() {
+    void success_withMessage_returnsGreenComponent() {
         Component component = Messages.success("Success message");
         assertEquals("Success message", ColorUtil.componentToString(component));
         assertEquals(NamedTextColor.GREEN, component.color());
     }
 
     @Test
-    public void title_withMessage_returnsGoldComponent() {
+    void title_withMessage_returnsGoldComponent() {
         Component component = Messages.title("Title message");
         assertEquals("Title message", ColorUtil.componentToString(component));
         assertEquals(NamedTextColor.GOLD, component.color());
     }
 
     @Test
-    public void info_withMessage_returnsGrayComponent() {
+    void info_withMessage_returnsGrayComponent() {
         Component component = Messages.info("Info message");
         assertEquals("Info message", ColorUtil.componentToString(component));
         assertEquals(NamedTextColor.GRAY, component.color());
