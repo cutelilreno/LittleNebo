@@ -159,10 +159,38 @@ public class ConfigManager {
 
     public boolean toggleDebug() {
         debug = !debug;
-        plugin.getConfig().set("debug", debug);
-        plugin.saveConfig();
-        loadConfig(); // bit of a weird hack, but harmless
+        plugin.getLogger().info("Debug mode is now " + (debug ? "enabled" : "disabled"));
         return debug;
+    }
+
+    public boolean saveConfigSafely() {
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
+        FileConfiguration config = plugin.getConfig();
+
+        try {
+            // Validate the configuration by attempting to save it to a temporary file
+            File tempFile = new File(plugin.getDataFolder(), "config_temp.yml");
+            config.save(tempFile);
+
+            // If successful, save the actual config
+            config.save(configFile);
+            if (tempFile.exists()) {
+                tempFile.delete();
+            }
+            return true;
+        } catch (IOException e) {
+            String message = e.getMessage();
+            if (message != null && message.contains("\n")) {
+                // For multi-line error messages, just take the first line
+                message = message.substring(0, message.indexOf('\n'));
+            }
+            plugin.getLogger().severe("╔══ Nebo: Configuration Error ═══════════════");
+            plugin.getLogger().severe("║ Failed to save config due to " + message);
+            plugin.getLogger().severe("║ Configuration changes were not saved");
+            plugin.getLogger().severe("║ to prevent data loss.");
+            plugin.getLogger().severe("╚════════════════════════════════════════════");
+            return false;
+        }
     }
 
     public boolean isPlayerLegacyColorsEnabled() {
