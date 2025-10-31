@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -31,13 +30,11 @@ import static org.bukkit.Bukkit.getServer;
 public class ChatManager implements Listener {
     private final LittleNebo plugin;
     private final ConfigManager configManager;
-    private final NeboChatRenderer chatRenderer;
     private final boolean placeholdersEnabled;
 
     public ChatManager(LittleNebo plugin, ConfigManager configManager) {
         this.plugin = plugin;
         this.configManager = configManager;
-        this.chatRenderer = new NeboChatRenderer(plugin);
 
         // Safely check if PlaceholderAPI is enabled
         boolean placeholdersAvailable = false;
@@ -53,48 +50,20 @@ public class ChatManager implements Listener {
 
     /**
      * Event handler for when a player sends a chat message.
-     * <p>
-     *     Sets the last message for the player in the chat renderer,
-     *     and applies the configured format to the message.
-     * </p>
      *
      * @param event the AsyncChatEvent
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncChatEvent event) {
-        Player player = event.getPlayer();
-
         Component originalMessage = event.message();
-
-        event.renderer(chatRenderer);
-
-        String messageStr = ColorUtil.componentToString(originalMessage);
-        messageStr = ColorUtil.prideTagToGradient(messageStr);
-        chatRenderer.setLastMessage(player, messageStr);
-
-        if(configManager.isDebugEnabled()) {
-            plugin.debug("Chat event processed for " + player.getName());
-            plugin.debug("Original message: " + ColorUtil.componentToString(originalMessage));
-
-            if(configManager.isPlayerLegacyColorsEnabled()) {
-                plugin.debug("Processed message: " + ColorUtil.serialiseMiniMessage(ColorUtil.parseMixedFormattingComponent(messageStr)));
-            } else plugin.debug("Processed message: " + messageStr);
-
-        }
+        
+        event.renderer((source, sourceDisplayName, message, viewer) -> {
+            // Work with the original message component directly
+            Component processedMessage = processMessage(originalMessage);
+            return formatWithComponent(source, processedMessage);
+        });
     }
 
-    /**
-     * Event handler for when a player quits the server.
-     * Removes the last message from the chat renderer.
-     *
-     * @param event the PlayerQuitEvent
-     */
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        // Honestly unless you have an insane influx of players joining and leaving,
-        // this probably isn't needed. But it's here for completeness.
-        chatRenderer.removeLastMessage(event.getPlayer());
-    }
 
     /**
      * Format a chat message.
@@ -106,30 +75,40 @@ public class ChatManager implements Listener {
      * @param message the raw message text
      * @return a formatted {@link Component}
      */
-    public Component formatMessage(Player player, String message) {
-        final String displayName = player != null ? 
-            ColorUtil.componentToString(player.displayName()) : "Console";
-       
+    private Component formatWithComponent(Player player, Component message) {
         FormatConfig format = configManager.getFormatForPlayer(player);
-        
-        final Component processedMessage = configManager.isPlayerLegacyColorsEnabled()
-                ? ColorUtil.parseMixedFormattingComponent(message)
-                : ColorUtil.parseSafeMiniMessage(message);
-
         String formatTemplate = format.format();
-
-        if(placeholdersEnabled && player != null) {
+        
+        if (placeholdersEnabled && player != null) {
             formatTemplate = PlaceholderAPI.setPlaceholders(player, formatTemplate);
         }
-
+        
         Component baseFormat = ColorUtil.parseMiniMessage(formatTemplate);
-
+        
         return baseFormat
-                .replaceText(builder -> builder
-                        .matchLiteral("{display_name}")
-                        .replacement(Component.text(displayName)))
-                .replaceText(builder -> builder
-                        .matchLiteral("{message}")
-                        .replacement(processedMessage));
+            .replaceText(builder -> builder
+                .matchLiteral("{display_name}")
+                .replacement(player.displayName()))
+            .replaceText(builder -> builder
+                .matchLiteral("{message}")
+                .replacement(message));  // Use the Component directly
+    }
+ 
+    /**
+     * Event handler for when a player sends a chat message.
+     *
+     * @param originalMessage the original message Component
+     */
+    private Component processMessage(Component originalMessage) {
+        String messageStr = ColorUtil.componentToString(originalMessage);
+        messageStr = ColorUtil.prideTagToGradient(messageStr);
+        
+        if (configManager.isPlayerLegacyColorsEnabled()) {
+            // Parse both legacy (&) codes and safe MiniMessage tags
+            return ColorUtil.parseMixedFormattingComponent(messageStr);
+        } else {
+            // Parse only safe MiniMessage tags
+            return ColorUtil.parseSafeMiniMessage(messageStr);
         }
+    }
 }

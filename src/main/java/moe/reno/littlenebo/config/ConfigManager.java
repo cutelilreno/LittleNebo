@@ -125,10 +125,9 @@ public class ConfigManager {
                 ConfigurationSection formatSection = formatsSection.getConfigurationSection(key);
                 if (formatSection != null) {
                     String format = formatSection.getString("format", "");
-                    String legacyFormat = formatSection.getString("legacy-format", "");
                     String permission = formatSection.getString("permission", "");
-    
-                    FormatConfig formatConfig = new FormatConfig(format, legacyFormat, permission);
+
+                    FormatConfig formatConfig = new FormatConfig(format, permission);
                     formats.put(key, formatConfig);
     
                     // Set the default format if the key is "default"
@@ -154,7 +153,6 @@ public class ConfigManager {
     private void setupDefaultFormat() {
         defaultFormat = new FormatConfig(
             "<gray>{display_name}</gray> <white>{message}</white>", // Default format
-            "", // No legacy format
             ""  // No permission required
         );
         formats.put("default", defaultFormat);

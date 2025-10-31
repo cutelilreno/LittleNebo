@@ -8,7 +8,7 @@ package moe.reno.littlenebo.config;
 /**
  * Handles format settings. These are loaded from the plugin conf.
  */
-public record FormatConfig (String format, String legacyFormat, String groupPermission) {
+public record FormatConfig (String format, String groupPermission) {
 
     /**
      * Creates a validated FormatConfig with fallback to default if invalid.
@@ -20,10 +20,9 @@ public record FormatConfig (String format, String legacyFormat, String groupPerm
             
         // Do not check for {display_name} in case they use PlaceholderAPI
         if (format == null || !format.contains("{message}")) {
-            return new FormatConfig("{display_name}: {message}", "", "");
+            return new FormatConfig("{display_name}: {message}", "");
         }
-        legacyFormat = ""; // remove as it is deprecated
-        return new FormatConfig(format, legacyFormat, groupPermission);
+        return new FormatConfig(format, groupPermission);
     }
 
     /**

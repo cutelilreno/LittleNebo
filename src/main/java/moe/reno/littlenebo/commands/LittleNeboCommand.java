@@ -8,12 +8,10 @@ package moe.reno.littlenebo.commands;
 import moe.reno.littlenebo.LittleNebo;
 import moe.reno.littlenebo.config.ConfigManager;
 import moe.reno.littlenebo.util.Messages;
-import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -103,23 +101,6 @@ public class LittleNeboCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage(Messages.title("Little Nebo Config:"));
                 sender.sendMessage(Messages.info(" • debug: " + cm.isDebugEnabled()));
                 sender.sendMessage(Messages.info(" • parse-player-colors: " + cm.isPlayerLegacyColorsEnabled()));
-            }
-            case "test" -> {
-                /* Not as helpful, but good for server admins to test formats on live servers
-                   probably a good idea to allow admins to pick the perm to test rather than force them to keep changing
-                   thru their perm plugins. Pretty unimportant feature so low priority.
-                 */
-                if (args.length < 3) {
-                    sender.sendMessage(Messages.error("Usage: /littlenebo debug test <message…>"));
-                    return;
-                }
-                String sample = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
-                Component formatted = plugin.getChatManager().formatMessage(
-                        (sender instanceof Player ? (Player) sender : null),
-                        sample
-                );
-                sender.sendMessage(Messages.title("Preview:"));
-                sender.sendMessage(formatted);
             }
             default -> {
                 sender.sendMessage(Messages.error("Unknown debug subcommand: " + args[1]));
